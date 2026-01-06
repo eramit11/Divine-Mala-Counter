@@ -17,8 +17,6 @@
             background-size: 400% 400%;
             animation: gradientShift 15s ease infinite;
             min-height: 100vh;
-            overflow-x: hidden;
-            position: relative;
         }
 
         @keyframes gradientShift {
@@ -26,133 +24,224 @@
             50% { background-position: 100% 50%; }
         }
 
-        /* Animated Mandala Background */
-        body::before {
-            content: '';
+        .screen {
+            display: none;
+        }
+
+        .screen.active {
+            display: block;
+        }
+
+        .loading {
             position: fixed;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            width: 600px;
-            height: 600px;
-            background: 
-                radial-gradient(circle at center, transparent 30%, rgba(255,153,51,0.1) 31%, transparent 32%),
-                radial-gradient(circle at center, transparent 45%, rgba(255,102,0,0.1) 46%, transparent 47%),
-                radial-gradient(circle at center, transparent 60%, rgba(255,153,51,0.08) 61%, transparent 62%);
-            border-radius: 50%;
-            animation: rotateMandala 30s linear infinite;
-            z-index: 0;
+            color: #ff6600;
+            font-size: 1.5em;
+            font-weight: bold;
         }
 
-        @keyframes rotateMandala {
-            0% { transform: translate(-50%, -50%) rotate(0deg); }
-            100% { transform: translate(-50%, -50%) rotate(360deg); }
+        .storage-notice {
+            background: rgba(255, 200, 100, 0.9);
+            color: #663300;
+            padding: 10px 15px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            font-size: 0.85em;
+            text-align: center;
         }
 
-        /* Floating Om Symbol */
-        body::after {
-            content: '🕉️';
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            font-size: 200px;
-            opacity: 0.03;
-            z-index: 0;
-            animation: omPulse 4s ease-in-out infinite;
+        /* Auth Screens */
+        .auth-container {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
         }
 
-        @keyframes omPulse {
-            0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.03; }
-            50% { transform: translate(-50%, -50%) scale(1.1); opacity: 0.05; }
+        .auth-box {
+            background: linear-gradient(135deg, rgba(255,255,255,0.98), rgba(255,250,240,0.98));
+            padding: 40px;
+            border-radius: 30px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            max-width: 400px;
+            width: 100%;
+            border: 3px solid rgba(255,153,51,0.3);
         }
 
-        .container {
+        .auth-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .auth-header h1 {
+            color: #ff6600;
+            font-size: 2em;
+            margin-bottom: 10px;
+        }
+
+        .auth-header p {
+            color: #666;
+            font-size: 0.9em;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            color: #ff6600;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #ff9933;
+            border-radius: 12px;
+            font-size: 1em;
+            background: white;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #ff6600;
+            box-shadow: 0 0 20px rgba(255,102,0,0.3);
+        }
+
+        .auth-btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #ff6600, #ff9933);
+            color: white;
+            border: none;
+            border-radius: 15px;
+            font-size: 1.1em;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 5px 20px rgba(255,102,0,0.3);
+        }
+
+        .auth-btn:hover {
+            transform: translateY(-3px);
+        }
+
+        .auth-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .toggle-link {
+            text-align: center;
+            margin-top: 20px;
+            color: #666;
+        }
+
+        .toggle-link a {
+            color: #ff6600;
+            font-weight: bold;
+            cursor: pointer;
+            text-decoration: underline;
+        }
+
+        .error-msg {
+            background: #ffe0e0;
+            color: #cc0000;
+            padding: 10px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            font-size: 0.9em;
+            display: none;
+        }
+
+        .success-msg {
+            background: #e0ffe0;
+            color: #006600;
+            padding: 10px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            font-size: 0.9em;
+            display: none;
+        }
+
+        /* App */
+        .app-container {
+            padding: 15px;
             max-width: 600px;
             margin: 0 auto;
-            padding: 15px;
-            position: relative;
-            z-index: 1;
         }
 
-        /* Enhanced Header */
+        .user-bar {
+            background: rgba(255,255,255,0.95);
+            padding: 12px 20px;
+            border-radius: 15px;
+            margin-bottom: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+
+        .user-info {
+            color: #ff6600;
+            font-weight: bold;
+        }
+
+        .btn {
+            padding: 8px 20px;
+            background: linear-gradient(135deg, #ff6600, #ff9933);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+
         .header {
             text-align: center;
             padding: 25px 20px;
-            background: linear-gradient(135deg, #ff6600 0%, #ff9933 50%, #ffcc00 100%);
+            background: linear-gradient(135deg, #ff6600, #ff9933, #ffcc00);
             border-radius: 25px;
-            box-shadow: 
-                0 20px 60px rgba(255,102,0,0.4),
-                inset 0 -2px 20px rgba(0,0,0,0.2),
-                inset 0 2px 20px rgba(255,255,255,0.3);
+            box-shadow: 0 20px 60px rgba(255,102,0,0.4);
             margin-bottom: 20px;
-            transform: translateZ(100px);
-            animation: headerFloat 3s ease-in-out infinite;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .header::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.1), transparent);
-            animation: shine 3s infinite;
-        }
-
-        @keyframes shine {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        @keyframes headerFloat {
-            0%, 100% { transform: translateY(0) translateZ(100px); }
-            50% { transform: translateY(-15px) translateZ(100px); }
         }
 
         .header h1 {
             color: white;
             font-size: 2em;
             text-shadow: 3px 3px 15px rgba(0,0,0,0.4);
-            margin-bottom: 8px;
-            letter-spacing: 2px;
-            position: relative;
         }
 
         .header p {
             color: #fff5e6;
-            font-size: 1em;
-            text-shadow: 1px 1px 5px rgba(0,0,0,0.3);
-            position: relative;
+            margin-top: 5px;
         }
 
-        /* Enhanced Chant Selection - Compact */
         .chant-selector {
-            background: linear-gradient(135deg, rgba(255,255,255,0.95), rgba(255,250,240,0.95));
+            background: rgba(255,255,255,0.95);
             padding: 20px;
             border-radius: 20px;
-            box-shadow: 
-                0 15px 50px rgba(0,0,0,0.15),
-                inset 0 1px 0 rgba(255,255,255,0.8);
+            box-shadow: 0 15px 50px rgba(0,0,0,0.15);
             margin-bottom: 20px;
-            transform-style: preserve-3d;
-            backdrop-filter: blur(10px);
         }
 
         .chant-selector h3 {
             color: #ff6600;
             margin-bottom: 12px;
-            font-size: 1.1em;
             text-align: center;
-            text-shadow: 1px 1px 3px rgba(255,102,0,0.2);
         }
 
-        .chant-buttons {
+        .chant-btns {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            grid-template-columns: repeat(2, 1fr);
             gap: 10px;
             margin-bottom: 12px;
         }
@@ -163,136 +252,50 @@
             border: 2px solid #ff9933;
             border-radius: 12px;
             cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-            font-size: 0.85em;
             color: #ff6600;
             font-weight: bold;
-            box-shadow: 0 5px 15px rgba(255,153,51,0.2);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .chant-btn::before {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 0;
-            height: 0;
-            border-radius: 50%;
-            background: rgba(255,153,51,0.3);
-            transform: translate(-50%, -50%);
-            transition: width 0.5s, height 0.5s;
-        }
-
-        .chant-btn:hover::before {
-            width: 200%;
-            height: 200%;
-        }
-
-        .chant-btn:hover {
-            transform: translateY(-5px) scale(1.05);
-            box-shadow: 0 10px 25px rgba(255,153,51,0.4);
+            font-size: 0.9em;
         }
 
         .chant-btn.active {
             background: linear-gradient(135deg, #ff9933, #ff6600);
             color: white;
-            transform: scale(1.05);
-            border-color: #ff6600;
-            box-shadow: 0 10px 30px rgba(255,102,0,0.5);
-            animation: activePulse 2s ease-in-out infinite;
         }
 
-        .custom-chant-btn {
-            position: relative;
-            padding-right: 40px;
-        }
-
-        .remove-chant {
-            position: absolute;
-            right: 8px;
-            top: 50%;
-            transform: translateY(-50%);
-            font-size: 0.9em;
-            cursor: pointer;
-            opacity: 0.6;
-            transition: all 0.3s;
-            background: rgba(255,255,255,0.2);
-            border-radius: 50%;
-            width: 24px;
-            height: 24px;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .remove-chant:hover {
-            opacity: 1;
-            background: rgba(255,0,0,0.8);
-            transform: translateY(-50%) scale(1.2);
-        }
-
-        @keyframes activePulse {
-            0%, 100% { box-shadow: 0 10px 30px rgba(255,102,0,0.5); }
-            50% { box-shadow: 0 10px 40px rgba(255,102,0,0.7); }
-        }
-
-        .custom-chant {
+        .counter-btn-wrap {
             display: flex;
-            gap: 8px;
-            margin-top: 10px;
+            justify-content: center;
+            margin-bottom: -90px;
+            position: relative;
+            z-index: 10;
         }
 
-        .custom-chant input {
-            flex: 1;
-            padding: 10px;
-            border: 2px solid #ff9933;
-            border-radius: 12px;
-            font-size: 0.9em;
-            background: rgba(255,255,255,0.9);
-            transition: all 0.3s;
-        }
-
-        .custom-chant input:focus {
-            outline: none;
-            border-color: #ff6600;
-            box-shadow: 0 0 20px rgba(255,102,0,0.3);
-        }
-
-        .custom-chant button {
-            padding: 10px 20px;
-            background: linear-gradient(135deg, #ff6600, #ff9933);
-            color: white;
-            border: none;
-            border-radius: 12px;
+        .counter-btn {
+            width: 160px;
+            height: 160px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #ff9933, #ff6600);
+            border: 6px solid white;
             cursor: pointer;
+            font-size: 1.1em;
+            color: white;
             font-weight: bold;
-            box-shadow: 0 5px 20px rgba(255,102,0,0.3);
-            transition: all 0.3s;
-            font-size: 0.9em;
+            box-shadow: 0 20px 60px rgba(255,102,0,0.6);
+            transition: transform 0.1s;
         }
 
-        .custom-chant button:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 25px rgba(255,102,0,0.4);
+        .counter-btn:active {
+            transform: scale(0.95);
         }
 
-        /* Enhanced Counter Display - Ultra Compact */
         .counter-display {
-            background: linear-gradient(135deg, rgba(255,255,255,0.98), rgba(255,250,240,0.98));
-            padding: 90px 20px 15px 20px;
+            background: rgba(255,255,255,0.98);
+            padding: 90px 20px 15px;
             border-radius: 25px;
-            box-shadow: 
-                0 20px 60px rgba(0,0,0,0.2),
-                inset 0 1px 0 rgba(255,255,255,1);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.2);
             margin-bottom: 15px;
             margin-top: -80px;
             text-align: center;
-            backdrop-filter: blur(10px);
-            border: 3px solid rgba(255,153,51,0.3);
-            position: relative;
-            z-index: 1;
         }
 
         .current-chant {
@@ -300,17 +303,9 @@
             color: #ff6600;
             margin-bottom: 10px;
             font-weight: bold;
-            text-shadow: 2px 2px 10px rgba(255,102,0,0.3);
-            animation: chantGlow 2s ease-in-out infinite;
-            padding: 8px 12px;
-            background: linear-gradient(135deg, rgba(255,153,51,0.1), rgba(255,102,0,0.05));
+            padding: 8px;
+            background: rgba(255,153,51,0.1);
             border-radius: 10px;
-            border: 2px solid rgba(255,153,51,0.2);
-        }
-
-        @keyframes chantGlow {
-            0%, 100% { text-shadow: 2px 2px 10px rgba(255,102,0,0.3); }
-            50% { text-shadow: 2px 2px 20px rgba(255,102,0,0.6); }
         }
 
         .count-display {
@@ -318,245 +313,76 @@
             color: #ff9933;
             font-weight: bold;
             margin: 10px 0;
-            text-shadow: 
-                4px 4px 20px rgba(255,153,51,0.5),
-                0 0 40px rgba(255,153,51,0.3);
-            animation: countPulse 1.5s ease-in-out infinite;
-            background: linear-gradient(135deg, #ff9933, #ff6600, #ffaa00);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            line-height: 1;
-        }
-
-        @keyframes countPulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.08); }
-        }
-
-        .mala-progress {
-            margin: 20px 0 15px 0;
         }
 
         .progress-bar {
             width: 100%;
-            height: 35px;
-            background: linear-gradient(135deg, #ffe4cc, #fff5e6);
-            border-radius: 20px;
+            height: 28px;
+            background: rgba(255,228,204,0.8);
+            border-radius: 18px;
             overflow: hidden;
-            position: relative;
-            box-shadow: 
-                inset 0 2px 10px rgba(0,0,0,0.1),
-                0 2px 10px rgba(255,153,51,0.2);
-            border: 2px solid rgba(255,153,51,0.3);
+            margin: 10px 0 6px;
         }
 
         .progress-fill {
             height: 100%;
-            background: linear-gradient(90deg, #ff9933, #ff6600, #ffcc00);
-            background-size: 200% 100%;
-            animation: progressFlow 2s linear infinite;
-            transition: width 0.3s ease;
-            border-radius: 20px;
-            position: relative;
-            box-shadow: 0 0 20px rgba(255,102,0,0.5);
-        }
-
-        @keyframes progressFlow {
-            0% { background-position: 0% 0%; }
-            100% { background-position: 200% 0%; }
-        }
-
-        .progress-fill::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
-            animation: shimmer 1.5s infinite;
-        }
-
-        @keyframes shimmer {
-            0% { transform: translateX(-100%); }
-            100% { transform: translateX(100%); }
+            background: linear-gradient(90deg, #ff9933, #ff6600);
+            border-radius: 18px;
+            transition: width 0.3s;
         }
 
         .progress-text {
-            text-align: center;
-            margin-top: 15px;
             color: #ff6600;
             font-weight: bold;
-            font-size: 1.2em;
-            text-shadow: 1px 1px 3px rgba(255,102,0,0.2);
+            margin-top: 6px;
         }
 
-        /* Enhanced 3D Counter Button - Positioned at TOP */
-        .counter-button-container {
-            perspective: 1500px;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            justify-content: center;
-            position: relative;
-            z-index: 10;
-            margin-bottom: -90px;
-        }
-
-        .counter-button {
-            width: 160px;
-            height: 160px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, #ff9933, #ff6600);
-            border: 6px solid rgba(255,255,255,0.95);
-            cursor: pointer;
-            font-size: 1.1em;
-            color: white;
+        .mala-count {
+            margin-top: 10px;
+            padding: 8px;
+            background: rgba(255,153,51,0.15);
+            border-radius: 10px;
+            color: #ff6600;
             font-weight: bold;
-            box-shadow: 
-                0 20px 60px rgba(255,102,0,0.6),
-                inset 0 -10px 25px rgba(0,0,0,0.3),
-                inset 0 10px 25px rgba(255,255,255,0.4),
-                0 0 40px rgba(255,153,51,0.4);
-            transition: all 0.1s;
-            transform-style: preserve-3d;
-            position: relative;
-            user-select: none;
-            animation: buttonFloat 3s ease-in-out infinite;
         }
 
-        @keyframes buttonFloat {
-            0%, 100% { 
-                transform: translateZ(0) translateY(0) rotateX(0deg); 
-            }
-            50% { 
-                transform: translateZ(20px) translateY(-10px) rotateX(5deg);
-                box-shadow: 
-                    0 25px 70px rgba(255,102,0,0.7),
-                    inset 0 -10px 25px rgba(0,0,0,0.3),
-                    inset 0 10px 25px rgba(255,255,255,0.4),
-                    0 0 50px rgba(255,153,51,0.5);
-            }
-        }
-
-        .counter-button::before {
-            content: '';
-            position: absolute;
-            top: 10%;
-            left: 10%;
-            right: 10%;
-            bottom: 10%;
-            border-radius: 50%;
-            background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.4), transparent);
-        }
-
-        .counter-button::after {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 0;
-            height: 0;
-            border-radius: 50%;
-            background: rgba(255,255,255,0.6);
-            transform: translate(-50%, -50%);
-            transition: width 0.4s, height 0.4s, opacity 0.4s;
-            opacity: 0;
-        }
-
-        .counter-button:hover {
-            transform: translateZ(30px) scale(1.05);
-            box-shadow: 
-                0 25px 70px rgba(255,102,0,0.7),
-                inset 0 -10px 25px rgba(0,0,0,0.3),
-                inset 0 10px 25px rgba(255,255,255,0.4),
-                0 0 60px rgba(255,153,51,0.6);
-            border-color: rgba(255,255,255,1);
-        }
-
-        .counter-button:active {
-            transform: translateZ(-10px) scale(0.95);
-            box-shadow: 
-                0 15px 40px rgba(255,102,0,0.5),
-                inset 0 8px 20px rgba(0,0,0,0.4);
-        }
-
-        .counter-button.ripple::after {
-            width: 250px;
-            height: 250px;
-            opacity: 0;
-        }
-
-        /* Enhanced Stats Dashboard */
         .stats-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
             gap: 15px;
-            margin-bottom: 20px;
-            margin-top: 15px;
-            position: relative;
-            z-index: 1;
+            margin: 15px 0 20px;
         }
 
         .stat-card {
-            background: linear-gradient(135deg, rgba(255,255,255,0.95), rgba(255,250,240,0.95));
+            background: rgba(255,255,255,0.95);
             padding: 18px;
             border-radius: 15px;
-            box-shadow: 
-                0 10px 30px rgba(0,0,0,0.15),
-                inset 0 1px 0 rgba(255,255,255,0.8);
             text-align: center;
-            transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-            border: 2px solid rgba(255,153,51,0.2);
-            backdrop-filter: blur(10px);
-        }
-
-        .stat-card:hover {
-            transform: translateY(-10px) rotateX(10deg);
-            box-shadow: 
-                0 20px 50px rgba(0,0,0,0.2),
-                0 0 30px rgba(255,153,51,0.3);
         }
 
         .stat-value {
             font-size: 2.2em;
-            background: linear-gradient(135deg, #ff9933, #ff6600);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+            color: #ff6600;
             font-weight: bold;
             margin: 12px 0;
-            text-shadow: 2px 2px 10px rgba(255,102,0,0.2);
         }
 
         .stat-label {
             color: #666;
             font-size: 0.9em;
             font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 1px;
         }
 
-        /* Enhanced Badges */
-        .badges-section {
-            background: linear-gradient(135deg, rgba(255,255,255,0.95), rgba(255,250,240,0.95));
+        .badges {
+            background: rgba(255,255,255,0.95);
             padding: 20px;
             border-radius: 20px;
-            box-shadow: 
-                0 15px 50px rgba(0,0,0,0.15),
-                inset 0 1px 0 rgba(255,255,255,0.8);
-            margin-bottom: 20px;
-            backdrop-filter: blur(10px);
-            border: 2px solid rgba(255,153,51,0.2);
         }
 
-        .badges-section h3 {
+        .badges h3 {
             color: #ff6600;
             margin-bottom: 12px;
-            font-size: 1.1em;
             text-align: center;
-            text-shadow: 1px 1px 3px rgba(255,102,0,0.2);
         }
 
         .badges-grid {
@@ -570,104 +396,28 @@
             padding: 20px;
             background: linear-gradient(135deg, #d3d3d3, #a9a9a9);
             border-radius: 15px;
-            transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
             border: 4px solid #999;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .badge::before {
-            content: '🔒';
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            font-size: 1.5em;
-            opacity: 0.5;
-        }
-
-        .badge.unlocked::before {
-            content: '✅';
-            opacity: 1;
-        }
-
-        .badge.bronze {
-            background: linear-gradient(135deg, #cd7f32, #b8722e);
-            border-color: #8b5a2b;
-        }
-
-        .badge.silver {
-            background: linear-gradient(135deg, #c0c0c0, #a8a8a8);
-            border-color: #808080;
-        }
-
-        .badge.gold {
-            background: linear-gradient(135deg, #ffd700, #ffaa00);
-            border-color: #ff8800;
-        }
-
-        .badge.diamond {
-            background: linear-gradient(135deg, #b9f2ff, #7ec8e3);
-            border-color: #4da6c7;
         }
 
         .badge.unlocked {
-            transform: scale(1.05);
-            box-shadow: 
-                0 15px 40px rgba(0,0,0,0.3),
-                0 0 50px currentColor;
-            animation: badgeShine 2s ease-in-out infinite;
+            animation: shine 2s infinite;
         }
 
-        .badge.bronze.unlocked {
-            box-shadow: 
-                0 15px 40px rgba(205,127,50,0.5),
-                0 0 50px rgba(205,127,50,0.6);
-        }
+        .badge.bronze.unlocked { background: linear-gradient(135deg, #cd7f32, #b8722e); }
+        .badge.silver.unlocked { background: linear-gradient(135deg, #c0c0c0, #a8a8a8); }
+        .badge.gold.unlocked { background: linear-gradient(135deg, #ffd700, #ffaa00); }
+        .badge.diamond.unlocked { background: linear-gradient(135deg, #b9f2ff, #7ec8e3); }
 
-        .badge.silver.unlocked {
-            box-shadow: 
-                0 15px 40px rgba(192,192,192,0.5),
-                0 0 50px rgba(192,192,192,0.6);
-        }
-
-        .badge.gold.unlocked {
-            box-shadow: 
-                0 15px 40px rgba(255,215,0,0.6),
-                0 0 60px rgba(255,215,0,0.7);
-        }
-
-        .badge.diamond.unlocked {
-            box-shadow: 
-                0 15px 40px rgba(127,255,212,0.6),
-                0 0 60px rgba(127,255,212,0.7);
-        }
-
-        @keyframes badgeShine {
+        @keyframes shine {
             0%, 100% { filter: brightness(1); }
             50% { filter: brightness(1.3); }
         }
 
-        .badge-icon {
-            font-size: 2.5em;
-            margin-bottom: 10px;
-            display: block;
-        }
+        .badge-icon { font-size: 2.5em; }
+        .badge-name { color: white; font-weight: bold; margin-top: 5px; }
+        .badge-count { color: rgba(255,255,255,0.8); font-size: 0.8em; }
 
-        .badge-name {
-            font-size: 0.85em;
-            color: white;
-            font-weight: bold;
-            text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
-        }
-
-        .badge-count {
-            font-size: 0.7em;
-            color: rgba(255,255,255,0.8);
-            margin-top: 4px;
-        }
-
-        /* Enhanced Completion Modal */
-        .completion-modal {
+        .modal {
             display: none;
             position: fixed;
             top: 0;
@@ -675,695 +425,563 @@
             right: 0;
             bottom: 0;
             background: rgba(0,0,0,0.8);
-            z-index: 1000;
             justify-content: center;
             align-items: center;
-            backdrop-filter: blur(10px);
+            z-index: 1000;
         }
 
-        .completion-modal.show {
+        .modal.show {
             display: flex;
         }
 
         .modal-content {
-            background: linear-gradient(135deg, #ff6600, #ff9933, #ffcc00);
+            background: linear-gradient(135deg, #ff6600, #ff9933);
             padding: 50px;
             border-radius: 30px;
             text-align: center;
-            max-width: 450px;
-            transform: scale(0);
-            animation: modalPop 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards;
-            position: relative;
-            overflow: hidden;
-            box-shadow: 
-                0 30px 80px rgba(0,0,0,0.4),
-                inset 0 2px 0 rgba(255,255,255,0.3);
-        }
-
-        .modal-content::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.2), transparent);
-            animation: modalShine 3s linear infinite;
-        }
-
-        @keyframes modalShine {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+            animation: modalPop 0.3s ease;
         }
 
         @keyframes modalPop {
-            0% { transform: scale(0) rotate(-180deg); opacity: 0; }
-            50% { transform: scale(1.15) rotate(10deg); }
-            100% { transform: scale(1) rotate(0); opacity: 1; }
+            0% { transform: scale(0.8); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
         }
 
-        .modal-content h2 {
+        .modal h2 {
             color: white;
             font-size: 2.5em;
-            margin-bottom: 25px;
-            text-shadow: 3px 3px 15px rgba(0,0,0,0.4);
-            position: relative;
-            animation: titleBounce 1s ease-in-out infinite;
+            margin-bottom: 20px;
         }
 
-        @keyframes titleBounce {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
-        }
-
-        .modal-content p {
-            color: #fff5e6;
+        .modal p {
+            color: white;
             font-size: 1.3em;
-            margin-bottom: 25px;
-            text-shadow: 2px 2px 8px rgba(0,0,0,0.3);
-            position: relative;
+            margin-bottom: 20px;
         }
 
-        .modal-close {
+        .modal button {
             background: white;
             color: #ff6600;
             border: none;
-            padding: 18px 40px;
+            padding: 15px 40px;
             border-radius: 15px;
             font-size: 1.1em;
             font-weight: bold;
             cursor: pointer;
-            transition: all 0.3s;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.3);
-            position: relative;
-        }
-
-        .modal-close:hover {
-            transform: scale(1.1) translateY(-3px);
-            box-shadow: 0 8px 30px rgba(0,0,0,0.4);
-        }
-
-        /* Enhanced Particles */
-        .particle {
-            position: fixed;
-            pointer-events: none;
-            animation: float-up 3s ease-out forwards;
-            filter: drop-shadow(0 0 5px currentColor);
-        }
-
-        @keyframes float-up {
-            0% {
-                transform: translateY(0) rotate(0deg) scale(1);
-                opacity: 1;
-            }
-            100% {
-                transform: translateY(-400px) rotate(720deg) scale(1.5);
-                opacity: 0;
-            }
-        }
-
-        /* Enhanced Controls */
-        .controls {
-            display: flex;
-            gap: 15px;
-            justify-content: center;
-            margin-top: 25px;
-        }
-
-        .control-btn {
-            padding: 15px 30px;
-            background: linear-gradient(135deg, rgba(255,255,255,0.95), rgba(255,250,240,0.95));
-            color: #ff6600;
-            border: 3px solid #ff6600;
-            border-radius: 15px;
-            cursor: pointer;
-            font-weight: bold;
-            transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-            box-shadow: 0 5px 20px rgba(255,102,0,0.2);
-            backdrop-filter: blur(10px);
-        }
-
-        .control-btn:hover {
-            background: linear-gradient(135deg, #ff6600, #ff9933);
-            color: white;
-            transform: translateY(-5px) scale(1.05);
-            box-shadow: 0 10px 30px rgba(255,102,0,0.4);
-        }
-
-        @keyframes slideDown {
-            from { transform: translateX(-50%) translateY(-100px); opacity: 0; }
-            to { transform: translateX(-50%) translateY(0); opacity: 1; }
-        }
-
-        @keyframes slideUp {
-            from { transform: translateX(-50%) translateY(0); opacity: 1; }
-            to { transform: translateX(-50%) translateY(-100px); opacity: 0; }
-        }
-
-        /* Responsive */
-        @media (max-width: 600px) {
-            .header h1 {
-                font-size: 1.6em;
-            }
-            .current-chant {
-                font-size: 1.1em;
-                padding: 6px 10px;
-            }
-            .count-display {
-                font-size: 3em;
-                margin: 8px 0;
-            }
-            .counter-button {
-                width: 140px;
-                height: 140px;
-                font-size: 0.95em;
-                border-width: 5px;
-            }
-            .counter-display {
-                padding: 80px 15px 12px 15px;
-                margin-top: -70px;
-            }
-            .counter-button-container {
-                margin-bottom: -80px;
-            }
-            .modal-content {
-                padding: 35px 25px;
-            }
-            .container {
-                padding: 10px;
-            }
-            .chant-selector, .badges-section {
-                padding: 15px;
-            }
-            .progress-bar {
-                height: 24px;
-            }
-            .progress-text {
-                font-size: 0.9em;
-                margin-top: 5px;
-            }
-            .mala-counter-section {
-                font-size: 0.9em;
-                padding: 6px 10px;
-                margin-top: 8px;
-            }
-            .counter-button.ripple::after {
-                width: 170px;
-                height: 170px;
-            }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <!-- Header -->
-        <div class="header">
-            <h1>🕉️ Divine Mala Counter 🙏</h1>
-            <p>Your spiritual journey companion</p>
-        </div>
+    <div id="loadingScreen" class="loading">🕉️ Loading...</div>
 
-        <!-- Chant Selection -->
-        <div class="chant-selector">
-            <h3>🌺 Select Your Sacred Chant 🌺</h3>
-            <div class="chant-buttons" id="presetChants">
-                <button class="chant-btn active" data-chant="Radha Radha">🌸 Radha Radha</button>
-                <button class="chant-btn" data-chant="Jai Shree Ram">🙏 Jai Shree Ram</button>
-                <button class="chant-btn" data-chant="Har Har Mahadev">🔱 Har Har Mahadev</button>
-                <button class="chant-btn" data-chant="Hare Krishna">🦚 Hare Krishna</button>
-            </div>
-            
-            <div id="customChantsSection" style="display: none; margin-top: 10px;">
-                <h4 style="color: #ff6600; margin: 10px 0 8px 0; font-size: 0.95em;">✨ Your Custom Chants</h4>
-                <div class="chant-buttons" id="customChantsList"></div>
-            </div>
-            
-            <div class="custom-chant">
-                <input type="text" id="customChant" placeholder="Enter custom chant...">
-                <button onclick="setCustomChant()">Add</button>
-            </div>
-        </div>
-
-        <!-- 3D Counter Button - Positioned at TOP -->
-        <div class="counter-button-container">
-            <button class="counter-button" id="counterBtn" onclick="incrementCount()">
-                TAP TO CHANT
-            </button>
-        </div>
-
-        <!-- Counter Display -->
-        <div class="counter-display">
-            <div class="current-chant" id="currentChant">Radhe Radhe</div>
-            <div class="count-display" id="countDisplay">0</div>
-            <div class="mala-progress">
-                <div class="progress-bar">
-                    <div class="progress-fill" id="progressFill" style="width: 0%"></div>
+    <!-- Login Screen -->
+    <div id="loginScreen" class="screen">
+        <div class="auth-container">
+            <div class="auth-box">
+                <div id="storageNoticeLogin" class="storage-notice" style="display:none;">
+                    ⚠️ Session-only mode: Data won't persist after closing
                 </div>
-                <div class="progress-text" id="progressText">0 / 108</div>
-            </div>
-            <div class="mala-counter-section">
-                🌼 Malas Completed: <span id="malaCount">0</span> 🌼
-            </div>
-        </div>
-
-        <!-- Stats Dashboard -->
-        <div class="stats-grid">
-            <div class="stat-card">
-                <div class="stat-label">Today's Chants</div>
-                <div class="stat-value" id="todayChants">0</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-label">Today's Malas</div>
-                <div class="stat-value" id="todayMalas">0</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-label">Total Chants</div>
-                <div class="stat-value" id="totalChants">0</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-label">Total Malas</div>
-                <div class="stat-value" id="totalMalas">0</div>
-            </div>
-        </div>
-
-        <!-- Badges -->
-        <div class="badges-section">
-            <h3>🏆 Your Sacred Achievements 🏆</h3>
-            <div class="badges-grid">
-                <div class="badge bronze" id="badge1">
-                    <div class="badge-icon">🥉</div>
-                    <div class="badge-name">First Mala</div>
-                    <div class="badge-count">Complete 1 Mala</div>
+                <div class="auth-header">
+                    <h1>🕉️ Divine Mala Counter</h1>
+                    <p>Track your spiritual journey</p>
                 </div>
-                <div class="badge silver" id="badge11">
-                    <div class="badge-icon">🥈</div>
-                    <div class="badge-name">11 Malas</div>
-                    <div class="badge-count">Complete 11 Malas</div>
+                <div id="loginError" class="error-msg"></div>
+                <div class="form-group">
+                    <label>Username</label>
+                    <input type="text" id="loginUser" autocomplete="username">
                 </div>
-                <div class="badge gold" id="badge108">
-                    <div class="badge-icon">🥇</div>
-                    <div class="badge-name">108 Malas</div>
-                    <div class="badge-count">Complete 108 Malas</div>
+                <div class="form-group">
+                    <label>Password</label>
+                    <input type="password" id="loginPass" autocomplete="current-password">
                 </div>
-                <div class="badge diamond" id="badgeDevotee">
-                    <div class="badge-icon">💎</div>
-                    <div class="badge-name">True Devotee</div>
-                    <div class="badge-count">1000+ Chants</div>
+                <button class="auth-btn" id="loginBtn" onclick="APP.login()">🙏 Login</button>
+                <div class="toggle-link">
+                    Don't have an account? <a onclick="APP.gotoSignup()">Sign up</a>
                 </div>
             </div>
         </div>
-
-        <!-- Controls Removed - Reset buttons have been removed -->
     </div>
 
-    <!-- Completion Modal -->
-    <div class="completion-modal" id="completionModal">
+    <!-- Signup Screen -->
+    <div id="signupScreen" class="screen">
+        <div class="auth-container">
+            <div class="auth-box">
+                <div id="storageNoticeSignup" class="storage-notice" style="display:none;">
+                    ⚠️ Session-only mode: Data won't persist after closing
+                </div>
+                <div class="auth-header">
+                    <h1>🕉️ Create Account</h1>
+                    <p>Start your spiritual journey</p>
+                </div>
+                <div id="signupError" class="error-msg"></div>
+                <div id="signupSuccess" class="success-msg"></div>
+                <div class="form-group">
+                    <label>Username</label>
+                    <input type="text" id="signupUser" autocomplete="username">
+                </div>
+                <div class="form-group">
+                    <label>Password</label>
+                    <input type="password" id="signupPass" autocomplete="new-password">
+                </div>
+                <div class="form-group">
+                    <label>Confirm Password</label>
+                    <input type="password" id="signupConfirm" autocomplete="new-password">
+                </div>
+                <button class="auth-btn" id="signupBtn" onclick="APP.signup()">✨ Create Account</button>
+                <div class="toggle-link">
+                    Already have an account? <a onclick="APP.gotoLogin()">Login</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- App Screen -->
+    <div id="appScreen" class="screen">
+        <div class="app-container">
+            <div id="storageNoticeApp" class="storage-notice" style="display:none;">
+                ⚠️ Session-only mode: Your progress won't be saved after closing
+            </div>
+            <div class="user-bar">
+                <div class="user-info">👤 <span id="username"></span></div>
+                <button class="btn" onclick="APP.logout(); return false;">Logout</button>
+            </div>
+
+            <div class="header">
+                <h1>🕉️ Divine Mala Counter 🙏</h1>
+                <p>Your spiritual journey companion</p>
+            </div>
+
+            <div class="chant-selector">
+                <h3>🌺 Select Your Sacred Chant 🌺</h3>
+                <div class="chant-btns">
+                    <button class="chant-btn active" onclick="APP.selectChant('Radhe Radhe', this)">🌸 Radhe Radhe</button>
+                    <button class="chant-btn" onclick="APP.selectChant('Jai Shree Ram', this)">🙏 Jai Shree Ram</button>
+                    <button class="chant-btn" onclick="APP.selectChant('Har Har Mahadev', this)">🔱 Har Har Mahadev</button>
+                    <button class="chant-btn" onclick="APP.selectChant('Hare Krishna', this)">🦚 Hare Krishna</button>
+                </div>
+            </div>
+
+            <div class="counter-btn-wrap">
+                <button class="counter-btn" onclick="APP.count()">TAP TO CHANT</button>
+            </div>
+
+            <div class="counter-display">
+                <div class="current-chant" id="currentChant">Radhe Radhe</div>
+                <div class="count-display" id="count">0</div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progress"></div>
+                </div>
+                <div class="progress-text" id="progressText">0 / 108</div>
+                <div class="mala-count">
+                    🌼 Malas Completed: <span id="malas">0</span> 🌼
+                </div>
+            </div>
+
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-label">Today's Chants</div>
+                    <div class="stat-value" id="todayChants">0</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Today's Malas</div>
+                    <div class="stat-value" id="todayMalas">0</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Total Chants</div>
+                    <div class="stat-value" id="totalChants">0</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Total Malas</div>
+                    <div class="stat-value" id="totalMalas">0</div>
+                </div>
+            </div>
+
+            <div class="badges">
+                <h3>🏆 Your Sacred Achievements 🏆</h3>
+                <div class="badges-grid">
+                    <div class="badge bronze" id="badge1">
+                        <div class="badge-icon">🥉</div>
+                        <div class="badge-name">First Mala</div>
+                        <div class="badge-count">1 Mala</div>
+                    </div>
+                    <div class="badge silver" id="badge11">
+                        <div class="badge-icon">🥈</div>
+                        <div class="badge-name">11 Malas</div>
+                        <div class="badge-count">11 Malas</div>
+                    </div>
+                    <div class="badge gold" id="badge108">
+                        <div class="badge-icon">🥇</div>
+                        <div class="badge-name">108 Malas</div>
+                        <div class="badge-count">108 Malas</div>
+                    </div>
+                    <div class="badge diamond" id="badgeDevotee">
+                        <div class="badge-icon">💎</div>
+                        <div class="badge-name">True Devotee</div>
+                        <div class="badge-count">1000+ Chants</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div id="modal" class="modal">
         <div class="modal-content">
             <h2>✨ Mala Completed! ✨</h2>
             <p>May your devotion bring peace and strength 🙏</p>
-            <p style="font-size: 2.5em; margin: 30px 0;">🌺 🌸 🌼 🌺 🌸</p>
-            <button class="modal-close" onclick="closeModal()">Continue Journey</button>
+            <p style="font-size: 2em;">🌺 🌸 🌼 🌺 🌸</p>
+            <button onclick="APP.closeModal()">Continue Journey</button>
         </div>
     </div>
 
     <script>
-        // Speech synthesis setup
-        const synth = window.speechSynthesis;
-        let currentVoice = null;
+        const APP = {
+            user: null,
+            usePersistentStorage: true,
+            inMemoryUsers: {},
+            state: {
+                chant: 'Radhe Radhe',
+                count: 0,
+                malas: 0,
+                todayChants: 0,
+                todayMalas: 0,
+                totalChants: 0,
+                totalMalas: 0,
+                lastDate: new Date().toDateString(),
+                badges: { first: false, eleven: false, oneOhEight: false, devotee: false }
+            },
 
-        // Load voices
-        function loadVoices() {
-            const voices = synth.getVoices();
-            // Try to find an Indian or English voice
-            currentVoice = voices.find(v => v.lang.includes('hi') || v.lang.includes('en-IN')) || voices[0];
-        }
+            // Storage Layer with fallback
+            async storageGet(key) {
+                if (this.usePersistentStorage) {
+                    try {
+                        const result = await window.storage.get(key);
+                        return result ? JSON.parse(result.value) : null;
+                    } catch (error) {
+                        this.usePersistentStorage = false;
+                        this.showStorageWarning();
+                        return this.inMemoryUsers[key] || null;
+                    }
+                } else {
+                    return this.inMemoryUsers[key] || null;
+                }
+            },
 
-        // Load voices on page load and when they change
-        loadVoices();
-        if (synth.onvoiceschanged !== undefined) {
-            synth.onvoiceschanged = loadVoices;
-        }
+            async storageSet(key, value) {
+                if (this.usePersistentStorage) {
+                    try {
+                        await window.storage.set(key, JSON.stringify(value));
+                        return true;
+                    } catch (error) {
+                        this.usePersistentStorage = false;
+                        this.showStorageWarning();
+                        this.inMemoryUsers[key] = value;
+                        return true;
+                    }
+                } else {
+                    this.inMemoryUsers[key] = value;
+                    return true;
+                }
+            },
 
-        // State management
-        let state = {
-            currentChant: 'Radhe Radhe',
-            count: 0,
-            malaCount: 0,
-            todayChants: 0,
-            todayMalas: 0,
-            totalChants: 0,
-            totalMalas: 0,
-            lastDate: new Date().toDateString(),
-            customChants: [], // Store custom chants
-            badges: {
-                first: false,
-                eleven: false,
-                oneOhEight: false,
-                devotee: false
+            showStorageWarning() {
+                const notices = ['storageNoticeLogin', 'storageNoticeSignup', 'storageNoticeApp'];
+                notices.forEach(id => {
+                    const el = document.getElementById(id);
+                    if (el) el.style.display = 'block';
+                });
+            },
+
+            async getUser(username) {
+                return await this.storageGet(`user:${username}`);
+            },
+
+            async saveUser(username, userData) {
+                return await this.storageSet(`user:${username}`, userData);
+            },
+
+            async getCurrentUser() {
+                return await this.storageGet('current_user');
+            },
+
+            async setCurrentUser(username) {
+                if (username) {
+                    await this.storageSet('current_user', username);
+                } else {
+                    // For logout, delete the key
+                    if (this.usePersistentStorage) {
+                        try {
+                            await window.storage.delete('current_user');
+                        } catch (error) {
+                            delete this.inMemoryUsers['current_user'];
+                        }
+                    } else {
+                        delete this.inMemoryUsers['current_user'];
+                    }
+                }
+            },
+
+            // Navigation
+            showScreen(id) {
+                document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+                document.getElementById(id).classList.add('active');
+                document.getElementById('loadingScreen').style.display = 'none';
+            },
+
+            gotoLogin() {
+                this.showScreen('loginScreen');
+                document.getElementById('loginError').style.display = 'none';
+                document.getElementById('loginUser').value = '';
+                document.getElementById('loginPass').value = '';
+                // Reset badge UI
+                document.querySelectorAll('.badge').forEach(b => b.classList.remove('unlocked'));
+                // Reset chant selection
+                document.querySelectorAll('.chant-btn').forEach(b => b.classList.remove('active'));
+                document.querySelectorAll('.chant-btn')[0]?.classList.add('active');
+            },
+
+            gotoSignup() {
+                this.showScreen('signupScreen');
+                document.getElementById('signupError').style.display = 'none';
+                document.getElementById('signupSuccess').style.display = 'none';
+                document.getElementById('signupUser').value = '';
+                document.getElementById('signupPass').value = '';
+                document.getElementById('signupConfirm').value = '';
+            },
+
+            showError(id, msg) {
+                const el = document.getElementById(id);
+                el.textContent = msg;
+                el.style.display = 'block';
+                setTimeout(() => el.style.display = 'none', 5000);
+            },
+
+            showSuccess(id, msg) {
+                const el = document.getElementById(id);
+                el.textContent = msg;
+                el.style.display = 'block';
+                setTimeout(() => el.style.display = 'none', 3000);
+            },
+
+            setButtonLoading(btnId, loading) {
+                const btn = document.getElementById(btnId);
+                btn.disabled = loading;
+                if (loading) {
+                    btn.dataset.originalText = btn.textContent;
+                    btn.textContent = '⏳ Please wait...';
+                } else {
+                    btn.textContent = btn.dataset.originalText || btn.textContent;
+                }
+            },
+
+            // Auth
+            async signup() {
+                const user = document.getElementById('signupUser').value.trim();
+                const pass = document.getElementById('signupPass').value;
+                const conf = document.getElementById('signupConfirm').value;
+
+                if (!user || user.length < 3) return this.showError('signupError', '⚠️ Username must be 3+ characters');
+                if (!pass || pass.length < 4) return this.showError('signupError', '⚠️ Password must be 4+ characters');
+                if (pass !== conf) return this.showError('signupError', '⚠️ Passwords do not match');
+
+                this.setButtonLoading('signupBtn', true);
+
+                const existingUser = await this.getUser(user);
+                if (existingUser) {
+                    this.setButtonLoading('signupBtn', false);
+                    return this.showError('signupError', '⚠️ Username already exists');
+                }
+
+                const userData = {
+                    password: pass,
+                    data: { ...this.state }
+                };
+
+                await this.saveUser(user, userData);
+                this.setButtonLoading('signupBtn', false);
+
+                this.showSuccess('signupSuccess', '✅ Account created! Redirecting to login...');
+                setTimeout(() => this.gotoLogin(), 2000);
+            },
+
+            async login() {
+                const user = document.getElementById('loginUser').value.trim();
+                const pass = document.getElementById('loginPass').value;
+
+                if (!user || !pass) return this.showError('loginError', '⚠️ Please enter username and password');
+
+                this.setButtonLoading('loginBtn', true);
+
+                const userData = await this.getUser(user);
+                
+                if (!userData) {
+                    this.setButtonLoading('loginBtn', false);
+                    return this.showError('loginError', '⚠️ User not found');
+                }
+                
+                if (userData.password !== pass) {
+                    this.setButtonLoading('loginBtn', false);
+                    return this.showError('loginError', '⚠️ Incorrect password');
+                }
+
+                this.user = user;
+                await this.setCurrentUser(user);
+                await this.loadData();
+                this.setButtonLoading('loginBtn', false);
+                this.showScreen('appScreen');
+            },
+
+            async logout() {
+                // Save data before logout
+                await this.saveData();
+                
+                // Clear current user
+                this.user = null;
+                
+                // Reset state to default
+                this.state = {
+                    chant: 'Radhe Radhe',
+                    count: 0,
+                    malas: 0,
+                    todayChants: 0,
+                    todayMalas: 0,
+                    totalChants: 0,
+                    totalMalas: 0,
+                    lastDate: new Date().toDateString(),
+                    badges: { first: false, eleven: false, oneOhEight: false, devotee: false }
+                };
+                
+                // Clear from storage
+                await this.setCurrentUser(null);
+                
+                // Go back to login
+                this.gotoLogin();
+            },
+
+            // Data
+            async loadData() {
+                const userData = await this.getUser(this.user);
+                if (userData && userData.data) {
+                    this.state = userData.data;
+                    
+                    // Check if it's a new day and reset daily stats
+                    const today = new Date().toDateString();
+                    if (this.state.lastDate !== today) {
+                        this.state.todayChants = 0;
+                        this.state.todayMalas = 0;
+                        this.state.lastDate = today;
+                        await this.saveData();
+                    }
+                }
+                document.getElementById('username').textContent = this.user;
+                this.updateUI();
+            },
+
+            async saveData() {
+                if (!this.user) return;
+                const userData = await this.getUser(this.user);
+                if (userData) {
+                    userData.data = this.state;
+                    await this.saveUser(this.user, userData);
+                }
+            },
+
+            // Counter
+            selectChant(chant, btn) {
+                document.querySelectorAll('.chant-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                
+                if (this.state.chant !== chant) {
+                    this.state.count = 0;
+                    this.state.malas = 0;
+                }
+                
+                this.state.chant = chant;
+                this.updateUI();
+                this.saveData();
+            },
+
+            async count() {
+                this.state.count++;
+                this.state.todayChants++;
+                this.state.totalChants++;
+
+                // Speech synthesis
+                try {
+                    const synth = window.speechSynthesis;
+                    const utterance = new SpeechSynthesisUtterance(this.state.chant);
+                    utterance.rate = 1.2;
+                    synth.speak(utterance);
+                } catch (error) {
+                    // Speech synthesis not available
+                }
+
+                if (this.state.count >= 108) {
+                    this.state.count = 0;
+                    this.state.malas++;
+                    this.state.todayMalas++;
+                    this.state.totalMalas++;
+                    this.checkBadges();
+                    document.getElementById('modal').classList.add('show');
+                }
+
+                this.updateUI();
+                await this.saveData();
+            },
+
+            checkBadges() {
+                if (this.state.totalMalas >= 1) this.state.badges.first = true;
+                if (this.state.totalMalas >= 11) this.state.badges.eleven = true;
+                if (this.state.totalMalas >= 108) this.state.badges.oneOhEight = true;
+                if (this.state.totalChants >= 1000) this.state.badges.devotee = true;
+            },
+
+            updateUI() {
+                document.getElementById('currentChant').textContent = this.state.chant;
+                document.getElementById('count').textContent = this.state.count;
+                document.getElementById('malas').textContent = this.state.malas;
+                document.getElementById('todayChants').textContent = this.state.todayChants;
+                document.getElementById('todayMalas').textContent = this.state.todayMalas;
+                document.getElementById('totalChants').textContent = this.state.totalChants;
+                document.getElementById('totalMalas').textContent = this.state.totalMalas;
+                
+                const prog = (this.state.count / 108) * 100;
+                document.getElementById('progress').style.width = prog + '%';
+                document.getElementById('progressText').textContent = this.state.count + ' / 108';
+
+                if (this.state.badges.first) document.getElementById('badge1').classList.add('unlocked');
+                if (this.state.badges.eleven) document.getElementById('badge11').classList.add('unlocked');
+                if (this.state.badges.oneOhEight) document.getElementById('badge108').classList.add('unlocked');
+                if (this.state.badges.devotee) document.getElementById('badgeDevotee').classList.add('unlocked');
+            },
+
+            closeModal() {
+                document.getElementById('modal').classList.remove('show');
+            },
+
+            async init() {
+                try {
+                    const user = await this.getCurrentUser();
+                    if (user && user !== 'null') {
+                        const userData = await this.getUser(user);
+                        if (userData) {
+                            this.user = user;
+                            await this.loadData();
+                            this.showScreen('appScreen');
+                        } else {
+                            this.showScreen('loginScreen');
+                        }
+                    } else {
+                        this.showScreen('loginScreen');
+                    }
+                } catch (error) {
+                    this.showScreen('loginScreen');
+                }
             }
         };
 
-        // Initialize app
-        function init() {
-            loadState();
-            updateUI();
-            setupChantButtons();
-            displayCustomChants();
-        }
-
-        function loadState() {
-            // State persists in memory during session
-        }
-
-        function saveState() {
-            checkDate();
-        }
-
-        function checkDate() {
-            const today = new Date().toDateString();
-            if (state.lastDate !== today) {
-                state.todayChants = 0;
-                state.todayMalas = 0;
-                state.lastDate = today;
-            }
-        }
-
-        function setupChantButtons() {
-            document.querySelectorAll('.chant-btn').forEach(btn => {
-                btn.addEventListener('click', function() {
-                    selectChant(this.dataset.chant, this);
-                });
-            });
-        }
-
-        function selectChant(chantText, buttonElement) {
-            // Deselect all buttons
-            document.querySelectorAll('.chant-btn').forEach(b => b.classList.remove('active'));
-            
-            // Select the clicked button
-            if (buttonElement) {
-                buttonElement.classList.add('active');
-            }
-            
-            // Check if chant is different from current
-            if (state.currentChant !== chantText) {
-                // Reset count to 0 when changing chant
-                state.count = 0;
-                state.malaCount = 0;
-                
-                // Update progress bar
-                document.getElementById('progressFill').style.width = '0%';
-                document.getElementById('progressText').textContent = '0 / 108';
-                
-                // Show notification
-                const notification = document.createElement('div');
-                notification.style.cssText = `
-                    position: fixed;
-                    top: 20px;
-                    left: 50%;
-                    transform: translateX(-50%);
-                    background: linear-gradient(135deg, #ff6600, #ff9933);
-                    color: white;
-                    padding: 15px 30px;
-                    border-radius: 15px;
-                    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-                    z-index: 10000;
-                    font-weight: bold;
-                    animation: slideDown 0.3s ease-out;
-                `;
-                notification.textContent = `🔄 Chant changed! Count reset to 0`;
-                document.body.appendChild(notification);
-                
-                setTimeout(() => {
-                    notification.style.animation = 'slideUp 0.3s ease-out';
-                    setTimeout(() => notification.remove(), 300);
-                }, 2000);
-            }
-            
-            state.currentChant = chantText;
-            updateUI();
-        }
-
-        function setCustomChant() {
-            const input = document.getElementById('customChant');
-            const chantText = input.value.trim();
-            
-            if (!chantText) {
-                alert('⚠️ Please enter a chant name!');
-                return;
-            }
-            
-            // Check if chant already exists in preset or custom
-            const presetChants = ['Radhe Radhe', 'Jai Shree Ram', 'Har Har Mahadev', 'Hare Krishna'];
-            if (presetChants.includes(chantText)) {
-                alert('⚠️ This chant already exists in presets!');
-                input.value = '';
-                return;
-            }
-            
-            if (state.customChants.includes(chantText)) {
-                alert('⚠️ This custom chant already exists!');
-                input.value = '';
-                return;
-            }
-            
-            // Add to custom chants
-            state.customChants.push(chantText);
-            input.value = '';
-            
-            // Update custom chants display
-            displayCustomChants();
-            
-            // Select the newly added chant
-            selectCustomChant(chantText);
-            
-            alert('✅ Custom chant added successfully! 🙏');
-        }
-
-        function displayCustomChants() {
-            const customSection = document.getElementById('customChantsSection');
-            const customList = document.getElementById('customChantsList');
-            
-            if (state.customChants.length === 0) {
-                customSection.style.display = 'none';
-                return;
-            }
-            
-            customSection.style.display = 'block';
-            customList.innerHTML = '';
-            
-            state.customChants.forEach((chant, index) => {
-                const btn = document.createElement('button');
-                btn.className = 'chant-btn custom-chant-btn';
-                btn.dataset.chant = chant;
-                btn.innerHTML = `✨ ${chant} <span class="remove-chant" onclick="removeCustomChant(${index}); event.stopPropagation();">❌</span>`;
-                
-                btn.addEventListener('click', function() {
-                    selectChant(chant, this);
-                });
-                
-                customList.appendChild(btn);
-            });
-        }
-
-        function selectCustomChant(chantText) {
-            document.querySelectorAll('.chant-btn').forEach(b => b.classList.remove('active'));
-            
-            // Find and activate the custom chant button
-            const customButtons = document.querySelectorAll('.custom-chant-btn');
-            customButtons.forEach(btn => {
-                if (btn.dataset.chant === chantText) {
-                    btn.classList.add('active');
-                }
-            });
-            
-            state.currentChant = chantText;
-            updateUI();
-        }
-
-        function removeCustomChant(index) {
-            const chantToRemove = state.customChants[index];
-            
-            if (confirm(`Remove "${chantToRemove}" from your custom chants?`)) {
-                state.customChants.splice(index, 1);
-                
-                // If removed chant was active, switch to default
-                if (state.currentChant === chantToRemove) {
-                    state.currentChant = 'Radhe Radhe';
-                    document.querySelectorAll('.chant-btn').forEach(b => b.classList.remove('active'));
-                    document.querySelector('[data-chant="Radhe Radhe"]').classList.add('active');
-                }
-                
-                displayCustomChants();
-                updateUI();
-                alert('✅ Custom chant removed! 🙏');
-            }
-        }
-
-        // Speak the chant name
-        function speakChant(text) {
-            // Cancel any ongoing speech
-            synth.cancel();
-            
-            const utterance = new SpeechSynthesisUtterance(text);
-            utterance.voice = currentVoice;
-            utterance.rate = 0.9;
-            utterance.pitch = 1.1;
-            utterance.volume = 1;
-            
-            synth.speak(utterance);
-        }
-
-        function incrementCount() {
-            state.count++;
-            state.todayChants++;
-            state.totalChants++;
-
-            // Speak the chant name
-            speakChant(state.currentChant);
-
-            // Add ripple effect
-            const btn = document.getElementById('counterBtn');
-            btn.classList.add('ripple');
-            setTimeout(() => btn.classList.remove('ripple'), 400);
-
-            // Create particles
-            createParticles();
-
-            // Play bell sound
-            playSound(400, 0.08);
-
-            // Check if Mala completed
-            if (state.count >= 108) {
-                completeMala();
-            }
-
-            updateUI();
-            saveState();
-        }
-
-        function completeMala() {
-            state.count = 0;
-            state.malaCount++;
-            state.todayMalas++;
-            state.totalMalas++;
-
-            // Show completion modal
-            document.getElementById('completionModal').classList.add('show');
-
-            // Play celebration bell sounds
-            playSound(523.25, 0.5);
-            setTimeout(() => playSound(659.25, 0.5), 200);
-            setTimeout(() => playSound(783.99, 0.5), 400);
-
-            // Create lots of particles
-            for (let i = 0; i < 40; i++) {
-                setTimeout(() => createParticles(), i * 50);
-            }
-
-            checkBadges();
-        }
-
-        function closeModal() {
-            document.getElementById('completionModal').classList.remove('show');
-        }
-
-        function createParticles() {
-            const particles = ['🌸', '🌺', '🌼', '✨', '⭐', '🌟', '💫', '🪷'];
-            const particle = document.createElement('div');
-            particle.className = 'particle';
-            particle.textContent = particles[Math.floor(Math.random() * particles.length)];
-            particle.style.left = Math.random() * window.innerWidth + 'px';
-            particle.style.top = window.innerHeight - 100 + 'px';
-            particle.style.fontSize = (Math.random() * 30 + 25) + 'px';
-            particle.style.color = ['#ff9933', '#ff6600', '#ffcc00', '#ff0066'][Math.floor(Math.random() * 4)];
-            document.body.appendChild(particle);
-
-            setTimeout(() => particle.remove(), 3000);
-        }
-
-        function playSound(frequency, duration) {
-            const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-            const oscillator = audioContext.createOscillator();
-            const gainNode = audioContext.createGain();
-
-            oscillator.connect(gainNode);
-            gainNode.connect(audioContext.destination);
-
-            oscillator.frequency.value = frequency;
-            oscillator.type = 'sine';
-
-            gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
-            gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + duration);
-
-            oscillator.start(audioContext.currentTime);
-            oscillator.stop(audioContext.currentTime + duration);
-        }
-
-        function checkBadges() {
-            if (state.totalMalas >= 1 && !state.badges.first) {
-                state.badges.first = true;
-                document.getElementById('badge1').classList.add('unlocked');
-            }
-            if (state.totalMalas >= 11 && !state.badges.eleven) {
-                state.badges.eleven = true;
-                document.getElementById('badge11').classList.add('unlocked');
-            }
-            if (state.totalMalas >= 108 && !state.badges.oneOhEight) {
-                state.badges.oneOhEight = true;
-                document.getElementById('badge108').classList.add('unlocked');
-            }
-            if (state.totalChants >= 1000 && !state.badges.devotee) {
-                state.badges.devotee = true;
-                document.getElementById('badgeDevotee').classList.add('unlocked');
-            }
-        }
-
-        function updateUI() {
-            document.getElementById('currentChant').textContent = state.currentChant;
-            document.getElementById('countDisplay').textContent = state.count;
-            document.getElementById('malaCount').textContent = state.malaCount;
-            document.getElementById('todayChants').textContent = state.todayChants;
-            document.getElementById('todayMalas').textContent = state.todayMalas;
-            document.getElementById('totalChants').textContent = state.totalChants;
-            document.getElementById('totalMalas').textContent = state.totalMalas;
-
-            const progress = (state.count / 108) * 100;
-            document.getElementById('progressFill').style.width = progress + '%';
-            document.getElementById('progressText').textContent = state.count + ' / 108';
-
-            // Update badges based on state
-            const badge1 = document.getElementById('badge1');
-            const badge11 = document.getElementById('badge11');
-            const badge108 = document.getElementById('badge108');
-            const badgeDevotee = document.getElementById('badgeDevotee');
-
-            if (state.badges.first) {
-                badge1.classList.add('unlocked');
-            } else {
-                badge1.classList.remove('unlocked');
-            }
-
-            if (state.badges.eleven) {
-                badge11.classList.add('unlocked');
-            } else {
-                badge11.classList.remove('unlocked');
-            }
-
-            if (state.badges.oneOhEight) {
-                badge108.classList.add('unlocked');
-            } else {
-                badge108.classList.remove('unlocked');
-            }
-
-            if (state.badges.devotee) {
-                badgeDevotee.classList.add('unlocked');
-            } else {
-                badgeDevotee.classList.remove('unlocked');
-            }
-        }
-
-        // Initialize on load
-        init();
+        // Initialize
+        APP.init();
     </script>
 </body>
 </html>
