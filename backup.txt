@@ -1,0 +1,1024 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Divine Mala Counter 🙏</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Georgia', serif;
+            background: linear-gradient(135deg, #ff9933 0%, #ffcc66 25%, #fff5e6 50%, #ffcc66 75%, #ff9933 100%);
+            background-size: 400% 400%;
+            animation: gradientShift 15s ease infinite;
+            min-height: 100vh;
+        }
+
+        @keyframes gradientShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        .screen {
+            display: none;
+        }
+
+        .screen.active {
+            display: block;
+        }
+
+        .loading {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: #ff6600;
+            font-size: 1.5em;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        /* Auth Screens */
+        .auth-container {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .auth-box {
+            background: linear-gradient(135deg, rgba(255,255,255,0.98), rgba(255,250,240,0.98));
+            padding: 40px;
+            border-radius: 30px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            max-width: 400px;
+            width: 100%;
+            border: 3px solid rgba(255,153,51,0.3);
+        }
+
+        .auth-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .auth-header h1 {
+            color: #ff6600;
+            font-size: 2em;
+            margin-bottom: 10px;
+        }
+
+        .auth-header p {
+            color: #666;
+            font-size: 0.9em;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            color: #ff6600;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #ff9933;
+            border-radius: 12px;
+            font-size: 1em;
+            background: white;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #ff6600;
+            box-shadow: 0 0 20px rgba(255,102,0,0.3);
+        }
+
+        .auth-btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #ff6600, #ff9933);
+            color: white;
+            border: none;
+            border-radius: 15px;
+            font-size: 1.1em;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 5px 20px rgba(255,102,0,0.3);
+            transition: transform 0.2s;
+        }
+
+        .auth-btn:hover {
+            transform: translateY(-3px);
+        }
+
+        .auth-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .toggle-link {
+            text-align: center;
+            margin-top: 20px;
+            color: #666;
+        }
+
+        .toggle-link a {
+            color: #ff6600;
+            font-weight: bold;
+            cursor: pointer;
+            text-decoration: underline;
+        }
+
+        .storage-warning {
+            background: rgba(255, 150, 50, 0.9);
+            color: white;
+            padding: 10px 15px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            font-size: 0.85em;
+            text-align: center;
+            display: none;
+        }
+
+        .error-msg {
+            background: #ffe0e0;
+            color: #cc0000;
+            padding: 10px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            font-size: 0.9em;
+            display: none;
+        }
+
+        .success-msg {
+            background: #e0ffe0;
+            color: #006600;
+            padding: 10px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            font-size: 0.9em;
+            display: none;
+        }
+
+        /* App */
+        .app-container {
+            padding: 15px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .user-bar {
+            background: rgba(255,255,255,0.95);
+            padding: 12px 20px;
+            border-radius: 15px;
+            margin-bottom: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+
+        .user-info {
+            color: #ff6600;
+            font-weight: bold;
+            font-size: 0.9em;
+            max-width: 60%;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .btn {
+            padding: 8px 20px;
+            background: linear-gradient(135deg, #ff6600, #ff9933);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: transform 0.2s;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .header {
+            text-align: center;
+            padding: 25px 20px;
+            background: linear-gradient(135deg, #ff6600, #ff9933, #ffcc00);
+            border-radius: 25px;
+            box-shadow: 0 20px 60px rgba(255,102,0,0.4);
+            margin-bottom: 20px;
+        }
+
+        .header h1 {
+            color: white;
+            font-size: 2em;
+            text-shadow: 3px 3px 15px rgba(0,0,0,0.4);
+        }
+
+        .header p {
+            color: #fff5e6;
+            margin-top: 5px;
+        }
+
+        .chant-selector {
+            background: rgba(255,255,255,0.95);
+            padding: 20px;
+            border-radius: 20px;
+            box-shadow: 0 15px 50px rgba(0,0,0,0.15);
+            margin-bottom: 20px;
+        }
+
+        .chant-selector h3 {
+            color: #ff6600;
+            margin-bottom: 12px;
+            text-align: center;
+        }
+
+        .chant-btns {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+
+        .chant-btn {
+            padding: 10px;
+            background: linear-gradient(135deg, #fff5e6, #ffe4cc);
+            border: 2px solid #ff9933;
+            border-radius: 12px;
+            cursor: pointer;
+            color: #ff6600;
+            font-weight: bold;
+            font-size: 0.85em;
+            transition: all 0.2s;
+            line-height: 1.3;
+        }
+
+        .chant-btn.active {
+            background: linear-gradient(135deg, #ff9933, #ff6600);
+            color: white;
+        }
+
+        .counter-btn-wrap {
+            display: flex;
+            justify-content: center;
+            margin-bottom: -90px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .counter-btn {
+            width: 160px;
+            height: 160px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #ff9933, #ff6600);
+            border: 6px solid white;
+            cursor: pointer;
+            font-size: 1.1em;
+            color: white;
+            font-weight: bold;
+            box-shadow: 0 20px 60px rgba(255,102,0,0.6);
+            transition: transform 0.1s;
+        }
+
+        .counter-btn:active {
+            transform: scale(0.95);
+        }
+
+        .counter-display {
+            background: rgba(255,255,255,0.98);
+            padding: 90px 20px 15px;
+            border-radius: 25px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+            margin-bottom: 15px;
+            margin-top: -80px;
+            text-align: center;
+        }
+
+        .current-chant {
+            font-size: 1.2em;
+            color: #ff6600;
+            margin-bottom: 10px;
+            font-weight: bold;
+            padding: 8px;
+            background: rgba(255,153,51,0.1);
+            border-radius: 10px;
+            word-wrap: break-word;
+            line-height: 1.4;
+        }
+
+        .count-display {
+            font-size: 3.5em;
+            color: #ff9933;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 28px;
+            background: rgba(255,228,204,0.8);
+            border-radius: 18px;
+            overflow: hidden;
+            margin: 10px 0 6px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #ff9933, #ff6600);
+            border-radius: 18px;
+            transition: width 0.3s;
+        }
+
+        .progress-text {
+            color: #ff6600;
+            font-weight: bold;
+            margin-top: 6px;
+        }
+
+        .mala-count {
+            margin-top: 10px;
+            padding: 8px;
+            background: rgba(255,153,51,0.15);
+            border-radius: 10px;
+            color: #ff6600;
+            font-weight: bold;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin: 15px 0 20px;
+        }
+
+        .stat-card {
+            background: rgba(255,255,255,0.95);
+            padding: 18px;
+            border-radius: 15px;
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 2.2em;
+            color: #ff6600;
+            font-weight: bold;
+            margin: 12px 0;
+        }
+
+        .stat-label {
+            color: #666;
+            font-size: 0.9em;
+            font-weight: 600;
+        }
+
+        .badges {
+            background: rgba(255,255,255,0.95);
+            padding: 20px;
+            border-radius: 20px;
+        }
+
+        .badges h3 {
+            color: #ff6600;
+            margin-bottom: 12px;
+            text-align: center;
+        }
+
+        .badges-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+        }
+
+        .badge {
+            text-align: center;
+            padding: 20px;
+            background: linear-gradient(135deg, #d3d3d3, #a9a9a9);
+            border-radius: 15px;
+            border: 4px solid #999;
+        }
+
+        .badge.unlocked {
+            animation: shine 2s infinite;
+        }
+
+        .badge.bronze.unlocked { background: linear-gradient(135deg, #cd7f32, #b8722e); }
+        .badge.silver.unlocked { background: linear-gradient(135deg, #c0c0c0, #a8a8a8); }
+        .badge.gold.unlocked { background: linear-gradient(135deg, #ffd700, #ffaa00); }
+        .badge.diamond.unlocked { background: linear-gradient(135deg, #b9f2ff, #7ec8e3); }
+
+        @keyframes shine {
+            0%, 100% { filter: brightness(1); }
+            50% { filter: brightness(1.3); }
+        }
+
+        .badge-icon { font-size: 2.5em; }
+        .badge-name { color: white; font-weight: bold; margin-top: 5px; }
+        .badge-count { color: rgba(255,255,255,0.8); font-size: 0.8em; }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.8);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .modal.show {
+            display: flex;
+        }
+
+        .modal-content {
+            background: linear-gradient(135deg, #ff6600, #ff9933);
+            padding: 50px;
+            border-radius: 30px;
+            text-align: center;
+            animation: modalPop 0.3s ease;
+        }
+
+        @keyframes modalPop {
+            0% { transform: scale(0.8); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .modal h2 {
+            color: white;
+            font-size: 2.5em;
+            margin-bottom: 20px;
+        }
+
+        .modal p {
+            color: white;
+            font-size: 1.3em;
+            margin-bottom: 20px;
+        }
+
+        .modal button {
+            background: white;
+            color: #ff6600;
+            border: none;
+            padding: 15px 40px;
+            border-radius: 15px;
+            font-size: 1.1em;
+            font-weight: bold;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div id="loadingScreen" class="loading">🕉️ Loading...</div>
+
+    <!-- Login Screen -->
+    <div id="loginScreen" class="screen">
+        <div class="auth-container">
+            <div class="auth-box">
+                <div id="storageWarningLogin" class="storage-warning">
+                    ⚠️ Session Mode: Data will be lost when you close the browser
+                </div>
+                <div class="auth-header">
+                    <h1>🕉️ Divine Mala Counter</h1>
+                    <p>Track your spiritual journey</p>
+                </div>
+                <div id="loginError" class="error-msg"></div>
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="email" id="loginEmail" autocomplete="username">
+                </div>
+                <div class="form-group">
+                    <label>Password</label>
+                    <input type="password" id="loginPass" autocomplete="current-password">
+                </div>
+                <button class="auth-btn" id="loginBtn" onclick="APP.login()">🙏 Login</button>
+                <div class="toggle-link">
+                    Don't have an account? <a onclick="APP.gotoSignup()">Sign up</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Signup Screen -->
+    <div id="signupScreen" class="screen">
+        <div class="auth-container">
+            <div class="auth-box">
+                <div id="storageWarningSignup" class="storage-warning">
+                    ⚠️ Session Mode: Data will be lost when you close the browser
+                </div>
+                <div class="auth-header">
+                    <h1>🕉️ Create Account</h1>
+                    <p>Start your spiritual journey</p>
+                </div>
+                <div id="signupError" class="error-msg"></div>
+                <div id="signupSuccess" class="success-msg"></div>
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="email" id="signupEmail" autocomplete="username">
+                </div>
+                <div class="form-group">
+                    <label>Password (min 6 characters)</label>
+                    <input type="password" id="signupPass" autocomplete="new-password">
+                </div>
+                <div class="form-group">
+                    <label>Confirm Password</label>
+                    <input type="password" id="signupConfirm" autocomplete="new-password">
+                </div>
+                <button class="auth-btn" id="signupBtn" onclick="APP.signup()">✨ Create Account</button>
+                <div class="toggle-link">
+                    Already have an account? <a onclick="APP.gotoLogin()">Login</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- App Screen -->
+    <div id="appScreen" class="screen">
+        <div class="app-container">
+            <div class="user-bar">
+                <div class="user-info">👤 <span id="username"></span></div>
+                <button class="btn" onclick="APP.logout()">Logout</button>
+            </div>
+
+            <div class="header">
+                <h1>🕉️ Divine Mala Counter 🙏</h1>
+                <p>Your spiritual journey companion</p>
+            </div>
+
+            <div class="chant-selector">
+                <h3>🌺 Select Your Sacred Chant 🌺</h3>
+                <div class="chant-btns">
+                    <button class="chant-btn active" onclick="APP.selectChant('Radha Radha', this)">🌸 Radha Radha</button>
+                    <button class="chant-btn" onclick="APP.selectChant('Jai Shree Ram', this)">🙏 Jai Shree Ram</button>
+                    <button class="chant-btn" onclick="APP.selectChant('Har Har Mahadev', this)">🔱 Har Har Mahadev</button>
+                    <button class="chant-btn" onclick="APP.selectChant('Hare Krishna', this)">🦚 Hare Krishna</button>
+                    <button class="chant-btn" onclick="APP.selectChant('Om Shivay Namastubhyam', this)">🕉️ Om Shivay Namastubhyam</button>
+                    <button class="chant-btn" onclick="APP.selectChant('Om Krishnaya Vasudevaya Haraye Paramatmane', this)">🌟 Om Krishnaya Vasudevaya</button>
+                </div>
+            </div>
+
+            <div class="counter-btn-wrap">
+                <button class="counter-btn" onclick="APP.count()">TAP TO CHANT</button>
+            </div>
+
+            <div class="counter-display">
+                <div class="current-chant" id="currentChant">Radha Radha</div>
+                <div class="count-display" id="count">0</div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progress"></div>
+                </div>
+                <div class="progress-text" id="progressText">0 / 108</div>
+                <div class="mala-count">
+                    🌼 Malas Completed: <span id="malas">0</span> 🌼
+                </div>
+            </div>
+
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-label">Today's Chants</div>
+                    <div class="stat-value" id="todayChants">0</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Today's Malas</div>
+                    <div class="stat-value" id="todayMalas">0</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Total Chants</div>
+                    <div class="stat-value" id="totalChants">0</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Total Malas</div>
+                    <div class="stat-value" id="totalMalas">0</div>
+                </div>
+            </div>
+
+            <div class="badges">
+                <h3>🏆 Your Sacred Achievements 🏆</h3>
+                <div class="badges-grid">
+                    <div class="badge bronze" id="badge1">
+                        <div class="badge-icon">🥉</div>
+                        <div class="badge-name">First Mala</div>
+                        <div class="badge-count">1 Mala</div>
+                    </div>
+                    <div class="badge silver" id="badge11">
+                        <div class="badge-icon">🥈</div>
+                        <div class="badge-name">11 Malas</div>
+                        <div class="badge-count">11 Malas</div>
+                    </div>
+                    <div class="badge gold" id="badge108">
+                        <div class="badge-icon">🥇</div>
+                        <div class="badge-name">108 Malas</div>
+                        <div class="badge-count">108 Malas</div>
+                    </div>
+                    <div class="badge diamond" id="badgeDevotee">
+                        <div class="badge-icon">💎</div>
+                        <div class="badge-name">True Devotee</div>
+                        <div class="badge-count">1000+ Chants</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <h2>✨ Mala Completed! ✨</h2>
+            <p>May your devotion bring peace and strength 🙏</p>
+            <p style="font-size: 2em;">🌺 🌸 🌼 🌺 🌸</p>
+            <button onclick="APP.closeModal()">Continue Journey</button>
+        </div>
+    </div>
+
+    <script>
+        const APP = {
+            currentUser: null,
+            memoryStorage: {}, // Fallback in-memory storage
+            useMemoryStorage: false,
+            state: {
+                chant: 'Radha Radha',
+                count: 0,
+                malas: 0,
+                todayChants: 0,
+                todayMalas: 0,
+                totalChants: 0,
+                totalMalas: 0,
+                lastDate: new Date().toDateString(),
+                badges: { first: false, eleven: false, oneOhEight: false, devotee: false }
+            },
+
+            // Storage helpers with fallback
+            async getStorage(key) {
+                // Try memory storage first if flag is set
+                if (this.useMemoryStorage) {
+                    return this.memoryStorage[key] || null;
+                }
+
+                // Try window.storage
+                try {
+                    if (typeof window.storage !== 'undefined') {
+                        const result = await window.storage.get(key);
+                        return result ? JSON.parse(result.value) : null;
+                    } else {
+                        // window.storage not available, use memory
+                        this.useMemoryStorage = true;
+                        return this.memoryStorage[key] || null;
+                    }
+                } catch (error) {
+                    // Fallback to memory storage
+                    this.useMemoryStorage = true;
+                    return this.memoryStorage[key] || null;
+                }
+            },
+
+            async setStorage(key, value) {
+                // Use memory storage if flag is set
+                if (this.useMemoryStorage) {
+                    this.memoryStorage[key] = value;
+                    return true;
+                }
+
+                // Try window.storage
+                try {
+                    if (typeof window.storage !== 'undefined') {
+                        await window.storage.set(key, JSON.stringify(value));
+                        return true;
+                    } else {
+                        // window.storage not available, use memory
+                        this.useMemoryStorage = true;
+                        this.showStorageWarning();
+                        this.memoryStorage[key] = value;
+                        return true;
+                    }
+                } catch (error) {
+                    // Fallback to memory storage
+                    this.useMemoryStorage = true;
+                    this.showStorageWarning();
+                    this.memoryStorage[key] = value;
+                    return true;
+                }
+            },
+
+            async deleteStorage(key) {
+                if (this.useMemoryStorage) {
+                    delete this.memoryStorage[key];
+                    return true;
+                }
+
+                try {
+                    if (typeof window.storage !== 'undefined') {
+                        await window.storage.delete(key);
+                        return true;
+                    } else {
+                        this.useMemoryStorage = true;
+                        delete this.memoryStorage[key];
+                        return true;
+                    }
+                } catch (error) {
+                    this.useMemoryStorage = true;
+                    delete this.memoryStorage[key];
+                    return true;
+                }
+            },
+
+            // Hash password (simple)
+            hashPassword(password) {
+                let hash = 0;
+                for (let i = 0; i < password.length; i++) {
+                    const char = password.charCodeAt(i);
+                    hash = ((hash << 5) - hash) + char;
+                    hash = hash & hash;
+                }
+                return hash.toString(36);
+            },
+
+            // Show storage warning if using memory storage
+            showStorageWarning() {
+                if (this.useMemoryStorage) {
+                    const loginWarning = document.getElementById('storageWarningLogin');
+                    const signupWarning = document.getElementById('storageWarningSignup');
+                    if (loginWarning) loginWarning.style.display = 'block';
+                    if (signupWarning) signupWarning.style.display = 'block';
+                }
+            },
+
+            // Navigation
+            showScreen(id) {
+                document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+                document.getElementById(id).classList.add('active');
+                document.getElementById('loadingScreen').style.display = 'none';
+            },
+
+            gotoLogin() {
+                this.showScreen('loginScreen');
+                document.getElementById('loginError').style.display = 'none';
+                document.getElementById('loginEmail').value = '';
+                document.getElementById('loginPass').value = '';
+            },
+
+            gotoSignup() {
+                this.showScreen('signupScreen');
+                document.getElementById('signupError').style.display = 'none';
+                document.getElementById('signupSuccess').style.display = 'none';
+                document.getElementById('signupEmail').value = '';
+                document.getElementById('signupPass').value = '';
+                document.getElementById('signupConfirm').value = '';
+            },
+
+            showError(id, msg) {
+                const el = document.getElementById(id);
+                el.textContent = msg;
+                el.style.display = 'block';
+                setTimeout(() => el.style.display = 'none', 5000);
+            },
+
+            showSuccess(id, msg) {
+                const el = document.getElementById(id);
+                el.textContent = msg;
+                el.style.display = 'block';
+            },
+
+            setButtonLoading(btnId, loading) {
+                const btn = document.getElementById(btnId);
+                btn.disabled = loading;
+                if (loading) {
+                    btn.dataset.originalText = btn.textContent;
+                    btn.textContent = '⏳ Please wait...';
+                } else {
+                    btn.textContent = btn.dataset.originalText || btn.textContent;
+                }
+            },
+
+            // Auth
+            async signup() {
+                const email = document.getElementById('signupEmail').value.trim().toLowerCase();
+                const pass = document.getElementById('signupPass').value;
+                const conf = document.getElementById('signupConfirm').value;
+
+                if (!email || !email.includes('@')) {
+                    return this.showError('signupError', '⚠️ Please enter a valid email');
+                }
+                if (!pass || pass.length < 6) {
+                    return this.showError('signupError', '⚠️ Password must be at least 6 characters');
+                }
+                if (pass !== conf) {
+                    return this.showError('signupError', '⚠️ Passwords do not match');
+                }
+
+                this.setButtonLoading('signupBtn', true);
+
+                // Check if user exists
+                const existingUser = await this.getStorage(`user:${email}`);
+                if (existingUser) {
+                    this.setButtonLoading('signupBtn', false);
+                    return this.showError('signupError', '⚠️ Email already registered');
+                }
+
+                // Create user
+                const userData = {
+                    email: email,
+                    password: this.hashPassword(pass),
+                    createdAt: new Date().toISOString(),
+                    data: { ...this.state }
+                };
+
+                const saved = await this.setStorage(`user:${email}`, userData);
+                this.setButtonLoading('signupBtn', false);
+
+                if (saved) {
+                    this.showSuccess('signupSuccess', '✅ Account created successfully! Redirecting to login...');
+                    setTimeout(() => {
+                        this.gotoLogin();
+                        document.getElementById('loginEmail').value = email;
+                    }, 2000);
+                } else {
+                    this.showError('signupError', '⚠️ Error creating account. Please try again.');
+                }
+            },
+
+            async login() {
+                const email = document.getElementById('loginEmail').value.trim().toLowerCase();
+                const pass = document.getElementById('loginPass').value;
+
+                if (!email || !pass) {
+                    return this.showError('loginError', '⚠️ Please enter email and password');
+                }
+
+                this.setButtonLoading('loginBtn', true);
+
+                const userData = await this.getStorage(`user:${email}`);
+                
+                if (!userData) {
+                    this.setButtonLoading('loginBtn', false);
+                    return this.showError('loginError', '⚠️ Account not found');
+                }
+                
+                if (userData.password !== this.hashPassword(pass)) {
+                    this.setButtonLoading('loginBtn', false);
+                    return this.showError('loginError', '⚠️ Incorrect password');
+                }
+
+                // Login successful
+                this.currentUser = email;
+                await this.setStorage('currentUser', email);
+                await this.loadUserData();
+                this.setButtonLoading('loginBtn', false);
+                this.showScreen('appScreen');
+            },
+
+            async logout() {
+                await this.saveUserData();
+                this.currentUser = null;
+                await this.deleteStorage('currentUser');
+                this.state = {
+                    chant: 'Radha Radha',
+                    count: 0,
+                    malas: 0,
+                    todayChants: 0,
+                    todayMalas: 0,
+                    totalChants: 0,
+                    totalMalas: 0,
+                    lastDate: new Date().toDateString(),
+                    badges: { first: false, eleven: false, oneOhEight: false, devotee: false }
+                };
+                document.querySelectorAll('.badge').forEach(b => b.classList.remove('unlocked'));
+                document.querySelectorAll('.chant-btn').forEach(b => b.classList.remove('active'));
+                document.querySelectorAll('.chant-btn')[0]?.classList.add('active');
+                this.gotoLogin();
+            },
+
+            // Data management
+            async loadUserData() {
+                const userData = await this.getStorage(`user:${this.currentUser}`);
+                if (userData && userData.data) {
+                    this.state = userData.data;
+                    
+                    // Check daily reset
+                    const today = new Date().toDateString();
+                    if (this.state.lastDate !== today) {
+                        this.state.todayChants = 0;
+                        this.state.todayMalas = 0;
+                        this.state.lastDate = today;
+                        await this.saveUserData();
+                    }
+                }
+                document.getElementById('username').textContent = this.currentUser;
+                this.updateUI();
+            },
+
+            async saveUserData() {
+                if (!this.currentUser) return;
+                
+                const userData = await this.getStorage(`user:${this.currentUser}`);
+                if (userData) {
+                    userData.data = { ...this.state };
+                    await this.setStorage(`user:${this.currentUser}`, userData);
+                }
+            },
+
+            // Counter functions
+            selectChant(chant, btn) {
+                document.querySelectorAll('.chant-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                
+                if (this.state.chant !== chant) {
+                    this.state.count = 0;
+                    this.state.malas = 0;
+                }
+                
+                this.state.chant = chant;
+                this.updateUI();
+                this.saveUserData();
+            },
+
+            async count() {
+                this.state.count++;
+                this.state.todayChants++;
+                this.state.totalChants++;
+
+                // Speech synthesis
+                try {
+                    const synth = window.speechSynthesis;
+                    const utterance = new SpeechSynthesisUtterance(this.state.chant);
+                    utterance.rate = 1.2;
+                    synth.speak(utterance);
+                } catch (error) {
+                    // Silent fail
+                }
+
+                if (this.state.count >= 108) {
+                    this.state.count = 0;
+                    this.state.malas++;
+                    this.state.todayMalas++;
+                    this.state.totalMalas++;
+                    this.checkBadges();
+                    document.getElementById('modal').classList.add('show');
+                }
+
+                this.updateUI();
+                await this.saveUserData();
+            },
+
+            checkBadges() {
+                if (this.state.totalMalas >= 1) this.state.badges.first = true;
+                if (this.state.totalMalas >= 11) this.state.badges.eleven = true;
+                if (this.state.totalMalas >= 108) this.state.badges.oneOhEight = true;
+                if (this.state.totalChants >= 1000) this.state.badges.devotee = true;
+            },
+
+            updateUI() {
+                document.getElementById('currentChant').textContent = this.state.chant;
+                document.getElementById('count').textContent = this.state.count;
+                document.getElementById('malas').textContent = this.state.malas;
+                document.getElementById('todayChants').textContent = this.state.todayChants;
+                document.getElementById('todayMalas').textContent = this.state.todayMalas;
+                document.getElementById('totalChants').textContent = this.state.totalChants;
+                document.getElementById('totalMalas').textContent = this.state.totalMalas;
+                
+                const prog = (this.state.count / 108) * 100;
+                document.getElementById('progress').style.width = prog + '%';
+                document.getElementById('progressText').textContent = this.state.count + ' / 108';
+
+                if (this.state.badges.first) document.getElementById('badge1').classList.add('unlocked');
+                if (this.state.badges.eleven) document.getElementById('badge11').classList.add('unlocked');
+                if (this.state.badges.oneOhEight) document.getElementById('badge108').classList.add('unlocked');
+                if (this.state.badges.devotee) document.getElementById('badgeDevotee').classList.add('unlocked');
+            },
+
+            closeModal() {
+                document.getElementById('modal').classList.remove('show');
+            },
+
+            async init() {
+                const currentUser = await this.getStorage('currentUser');
+                if (currentUser) {
+                    this.currentUser = currentUser;
+                    await this.loadUserData();
+                    this.showScreen('appScreen');
+                } else {
+                    this.showScreen('loginScreen');
+                }
+            }
+        };
+
+        // Initialize
+        APP.init();
+    </script>
+</body>
+</html>
