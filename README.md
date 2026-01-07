@@ -3,6 +3,10 @@
 A beautiful 3D web application for tracking spiritual chanting practice with voice feedback and achievement system.
 ✨ Features
 
+https://eramit11.github.io/divine-mala-counter/
+
+
+
 Interactive 3D Counter - Tap to count with voice synthesis
 Auto Mala Tracking - Converts 108 counts to 1 Mala automatically
 4 Preset Chants - Radhe Radhe, Jai Shree Ram, Har Har Mahadev, Hare Krishna
