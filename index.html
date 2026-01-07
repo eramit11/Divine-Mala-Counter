@@ -141,6 +141,17 @@
             text-decoration: underline;
         }
 
+        .storage-warning {
+            background: rgba(255, 150, 50, 0.9);
+            color: white;
+            padding: 10px 15px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            font-size: 0.85em;
+            text-align: center;
+            display: none;
+        }
+
         .error-msg {
             background: #ffe0e0;
             color: #cc0000;
@@ -480,6 +491,9 @@
     <div id="loginScreen" class="screen">
         <div class="auth-container">
             <div class="auth-box">
+                <div id="storageWarningLogin" class="storage-warning">
+                    ⚠️ Session Mode: Data will be lost when you close the browser
+                </div>
                 <div class="auth-header">
                     <h1>🕉️ Divine Mala Counter</h1>
                     <p>Track your spiritual journey</p>
@@ -505,6 +519,9 @@
     <div id="signupScreen" class="screen">
         <div class="auth-container">
             <div class="auth-box">
+                <div id="storageWarningSignup" class="storage-warning">
+                    ⚠️ Session Mode: Data will be lost when you close the browser
+                </div>
                 <div class="auth-header">
                     <h1>🕉️ Create Account</h1>
                     <p>Start your spiritual journey</p>
@@ -632,6 +649,8 @@
     <script>
         const APP = {
             currentUser: null,
+            memoryStorage: {}, // Fallback in-memory storage
+            useMemoryStorage: false,
             state: {
                 chant: 'Radha Radha',
                 count: 0,
@@ -644,31 +663,77 @@
                 badges: { first: false, eleven: false, oneOhEight: false, devotee: false }
             },
 
-            // Storage helpers
+            // Storage helpers with fallback
             async getStorage(key) {
+                // Try memory storage first if flag is set
+                if (this.useMemoryStorage) {
+                    return this.memoryStorage[key] || null;
+                }
+
+                // Try window.storage
                 try {
-                    const result = await window.storage.get(key);
-                    return result ? JSON.parse(result.value) : null;
+                    if (typeof window.storage !== 'undefined') {
+                        const result = await window.storage.get(key);
+                        return result ? JSON.parse(result.value) : null;
+                    } else {
+                        // window.storage not available, use memory
+                        this.useMemoryStorage = true;
+                        return this.memoryStorage[key] || null;
+                    }
                 } catch (error) {
-                    return null;
+                    // Fallback to memory storage
+                    this.useMemoryStorage = true;
+                    return this.memoryStorage[key] || null;
                 }
             },
 
             async setStorage(key, value) {
-                try {
-                    await window.storage.set(key, JSON.stringify(value));
+                // Use memory storage if flag is set
+                if (this.useMemoryStorage) {
+                    this.memoryStorage[key] = value;
                     return true;
+                }
+
+                // Try window.storage
+                try {
+                    if (typeof window.storage !== 'undefined') {
+                        await window.storage.set(key, JSON.stringify(value));
+                        return true;
+                    } else {
+                        // window.storage not available, use memory
+                        this.useMemoryStorage = true;
+                        this.showStorageWarning();
+                        this.memoryStorage[key] = value;
+                        return true;
+                    }
                 } catch (error) {
-                    return false;
+                    // Fallback to memory storage
+                    this.useMemoryStorage = true;
+                    this.showStorageWarning();
+                    this.memoryStorage[key] = value;
+                    return true;
                 }
             },
 
             async deleteStorage(key) {
-                try {
-                    await window.storage.delete(key);
+                if (this.useMemoryStorage) {
+                    delete this.memoryStorage[key];
                     return true;
+                }
+
+                try {
+                    if (typeof window.storage !== 'undefined') {
+                        await window.storage.delete(key);
+                        return true;
+                    } else {
+                        this.useMemoryStorage = true;
+                        delete this.memoryStorage[key];
+                        return true;
+                    }
                 } catch (error) {
-                    return false;
+                    this.useMemoryStorage = true;
+                    delete this.memoryStorage[key];
+                    return true;
                 }
             },
 
@@ -681,6 +746,16 @@
                     hash = hash & hash;
                 }
                 return hash.toString(36);
+            },
+
+            // Show storage warning if using memory storage
+            showStorageWarning() {
+                if (this.useMemoryStorage) {
+                    const loginWarning = document.getElementById('storageWarningLogin');
+                    const signupWarning = document.getElementById('storageWarningSignup');
+                    if (loginWarning) loginWarning.style.display = 'block';
+                    if (signupWarning) signupWarning.style.display = 'block';
+                }
             },
 
             // Navigation
