@@ -141,17 +141,6 @@
             text-decoration: underline;
         }
 
-        .storage-warning {
-            background: rgba(255, 150, 50, 0.9);
-            color: white;
-            padding: 10px 15px;
-            border-radius: 10px;
-            margin-bottom: 15px;
-            font-size: 0.85em;
-            text-align: center;
-            display: none;
-        }
-
         .error-msg {
             background: #ffe0e0;
             color: #cc0000;
@@ -160,6 +149,7 @@
             margin-bottom: 15px;
             font-size: 0.9em;
             display: none;
+            white-space: pre-line;
         }
 
         .success-msg {
@@ -485,15 +475,15 @@
     </style>
 </head>
 <body>
-    <div id="loadingScreen" class="loading">🕉️ Loading...</div>
+    <div id="loadingScreen" class="loading">
+        🕉️ Connecting to Cloud...<br>
+        <small id="connectionStatus" style="font-size: 0.6em; margin-top: 10px; display: block;"></small>
+    </div>
 
     <!-- Login Screen -->
     <div id="loginScreen" class="screen">
         <div class="auth-container">
             <div class="auth-box">
-                <div id="storageWarningLogin" class="storage-warning">
-                    ⚠️ Session Mode: Data will be lost when you close the browser
-                </div>
                 <div class="auth-header">
                     <h1>🕉️ Divine Mala Counter</h1>
                     <p>Track your spiritual journey</p>
@@ -519,9 +509,6 @@
     <div id="signupScreen" class="screen">
         <div class="auth-container">
             <div class="auth-box">
-                <div id="storageWarningSignup" class="storage-warning">
-                    ⚠️ Session Mode: Data will be lost when you close the browser
-                </div>
                 <div class="auth-header">
                     <h1>🕉️ Create Account</h1>
                     <p>Start your spiritual journey</p>
@@ -646,11 +633,18 @@
         </div>
     </div>
 
+    <!-- Supabase Client -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
     <script>
+        // Supabase Configuration
+        const SUPABASE_URL = 'https://vegcfuglcblcbxbqpfkr.supabase.co';
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZlZ2NmdWdsY2JsY2J4YnFwZmtyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njc3NzcyNTcsImV4cCI6MjA4MzM1MzI1N30.ZUCRjc__cQeL-tNM16DaokG7oaXM7hm23pS2xRu6Vus';
+
+        const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
         const APP = {
             currentUser: null,
-            memoryStorage: {}, // Fallback in-memory storage
-            useMemoryStorage: false,
             state: {
                 chant: 'Radha Radha',
                 count: 0,
@@ -661,101 +655,6 @@
                 totalMalas: 0,
                 lastDate: new Date().toDateString(),
                 badges: { first: false, eleven: false, oneOhEight: false, devotee: false }
-            },
-
-            // Storage helpers with fallback
-            async getStorage(key) {
-                // Try memory storage first if flag is set
-                if (this.useMemoryStorage) {
-                    return this.memoryStorage[key] || null;
-                }
-
-                // Try window.storage
-                try {
-                    if (typeof window.storage !== 'undefined') {
-                        const result = await window.storage.get(key);
-                        return result ? JSON.parse(result.value) : null;
-                    } else {
-                        // window.storage not available, use memory
-                        this.useMemoryStorage = true;
-                        return this.memoryStorage[key] || null;
-                    }
-                } catch (error) {
-                    // Fallback to memory storage
-                    this.useMemoryStorage = true;
-                    return this.memoryStorage[key] || null;
-                }
-            },
-
-            async setStorage(key, value) {
-                // Use memory storage if flag is set
-                if (this.useMemoryStorage) {
-                    this.memoryStorage[key] = value;
-                    return true;
-                }
-
-                // Try window.storage
-                try {
-                    if (typeof window.storage !== 'undefined') {
-                        await window.storage.set(key, JSON.stringify(value));
-                        return true;
-                    } else {
-                        // window.storage not available, use memory
-                        this.useMemoryStorage = true;
-                        this.showStorageWarning();
-                        this.memoryStorage[key] = value;
-                        return true;
-                    }
-                } catch (error) {
-                    // Fallback to memory storage
-                    this.useMemoryStorage = true;
-                    this.showStorageWarning();
-                    this.memoryStorage[key] = value;
-                    return true;
-                }
-            },
-
-            async deleteStorage(key) {
-                if (this.useMemoryStorage) {
-                    delete this.memoryStorage[key];
-                    return true;
-                }
-
-                try {
-                    if (typeof window.storage !== 'undefined') {
-                        await window.storage.delete(key);
-                        return true;
-                    } else {
-                        this.useMemoryStorage = true;
-                        delete this.memoryStorage[key];
-                        return true;
-                    }
-                } catch (error) {
-                    this.useMemoryStorage = true;
-                    delete this.memoryStorage[key];
-                    return true;
-                }
-            },
-
-            // Hash password (simple)
-            hashPassword(password) {
-                let hash = 0;
-                for (let i = 0; i < password.length; i++) {
-                    const char = password.charCodeAt(i);
-                    hash = ((hash << 5) - hash) + char;
-                    hash = hash & hash;
-                }
-                return hash.toString(36);
-            },
-
-            // Show storage warning if using memory storage
-            showStorageWarning() {
-                if (this.useMemoryStorage) {
-                    const loginWarning = document.getElementById('storageWarningLogin');
-                    const signupWarning = document.getElementById('storageWarningSignup');
-                    if (loginWarning) loginWarning.style.display = 'block';
-                    if (signupWarning) signupWarning.style.display = 'block';
-                }
             },
 
             // Navigation
@@ -807,7 +706,7 @@
 
             // Auth
             async signup() {
-                const email = document.getElementById('signupEmail').value.trim().toLowerCase();
+                const email = document.getElementById('signupEmail').value.trim();
                 const pass = document.getElementById('signupPass').value;
                 const conf = document.getElementById('signupConfirm').value;
 
@@ -823,37 +722,53 @@
 
                 this.setButtonLoading('signupBtn', true);
 
-                // Check if user exists
-                const existingUser = await this.getStorage(`user:${email}`);
-                if (existingUser) {
-                    this.setButtonLoading('signupBtn', false);
-                    return this.showError('signupError', '⚠️ Email already registered');
-                }
+                try {
+                    const { data, error } = await supabaseClient.auth.signUp({
+                        email: email,
+                        password: pass,
+                    });
 
-                // Create user
-                const userData = {
-                    email: email,
-                    password: this.hashPassword(pass),
-                    createdAt: new Date().toISOString(),
-                    data: { ...this.state }
-                };
+                    if (error) throw error;
 
-                const saved = await this.setStorage(`user:${email}`, userData);
-                this.setButtonLoading('signupBtn', false);
+                    // Create initial user data (will be created on first login if table doesn't exist)
+                    if (data.user) {
+                        try {
+                            await supabaseClient.from('user_data').insert({
+                                user_id: data.user.id,
+                                data: this.state
+                            });
+                        } catch (dbError) {
+                            // Table might not exist yet, data will be created on first login
+                        }
+                    }
 
-                if (saved) {
-                    this.showSuccess('signupSuccess', '✅ Account created successfully! Redirecting to login...');
+                    this.showSuccess('signupSuccess', '✅ Account created! Redirecting...');
                     setTimeout(() => {
                         this.gotoLogin();
                         document.getElementById('loginEmail').value = email;
                     }, 2000);
-                } else {
-                    this.showError('signupError', '⚠️ Error creating account. Please try again.');
+
+                } catch (error) {
+                    let errorMsg = '⚠️ ';
+                    
+                    if (error.message && error.message.includes('Failed to fetch')) {
+                        errorMsg += 'Connection error. Please check:\n1. Internet connection\n2. Database table is created in Supabase';
+                    } else if (error.message && error.message.includes('already registered')) {
+                        errorMsg += 'Email already registered';
+                    } else if (error.message) {
+                        errorMsg += error.message;
+                    } else {
+                        errorMsg += 'Signup failed. Please try again.';
+                    }
+                    
+                    this.showError('signupError', errorMsg);
+                } finally {
+                    this.setButtonLoading('signupBtn', false);
                 }
             },
 
             async login() {
-                const email = document.getElementById('loginEmail').value.trim().toLowerCase();
+                const email = document.getElementById('loginEmail').value.trim();
                 const pass = document.getElementById('loginPass').value;
 
                 if (!email || !pass) {
@@ -862,30 +777,32 @@
 
                 this.setButtonLoading('loginBtn', true);
 
-                const userData = await this.getStorage(`user:${email}`);
-                
-                if (!userData) {
-                    this.setButtonLoading('loginBtn', false);
-                    return this.showError('loginError', '⚠️ Account not found');
-                }
-                
-                if (userData.password !== this.hashPassword(pass)) {
-                    this.setButtonLoading('loginBtn', false);
-                    return this.showError('loginError', '⚠️ Incorrect password');
-                }
+                try {
+                    const { data, error } = await supabaseClient.auth.signInWithPassword({
+                        email: email,
+                        password: pass,
+                    });
 
-                // Login successful
-                this.currentUser = email;
-                await this.setStorage('currentUser', email);
-                await this.loadUserData();
-                this.setButtonLoading('loginBtn', false);
-                this.showScreen('appScreen');
+                    if (error) throw error;
+
+                    // Login successful - session handled by onAuthStateChange
+                    
+                } catch (error) {
+                    let errorMsg = '⚠️ ';
+                    if (error.message.includes('Invalid login credentials')) {
+                        errorMsg += 'Invalid email or password';
+                    } else {
+                        errorMsg += error.message;
+                    }
+                    this.showError('loginError', errorMsg);
+                    this.setButtonLoading('loginBtn', false);
+                }
             },
 
             async logout() {
                 await this.saveUserData();
+                await supabaseClient.auth.signOut();
                 this.currentUser = null;
-                await this.deleteStorage('currentUser');
                 this.state = {
                     chant: 'Radha Radha',
                     count: 0,
@@ -905,30 +822,57 @@
 
             // Data management
             async loadUserData() {
-                const userData = await this.getStorage(`user:${this.currentUser}`);
-                if (userData && userData.data) {
-                    this.state = userData.data;
-                    
-                    // Check daily reset
-                    const today = new Date().toDateString();
-                    if (this.state.lastDate !== today) {
-                        this.state.todayChants = 0;
-                        this.state.todayMalas = 0;
-                        this.state.lastDate = today;
+                if (!this.currentUser) return;
+
+                try {
+                    const { data, error } = await supabaseClient
+                        .from('user_data')
+                        .select('data')
+                        .eq('user_id', this.currentUser.id)
+                        .single();
+
+                    if (error && error.code !== 'PGRST116') throw error;
+
+                    if (data && data.data) {
+                        this.state = data.data;
+                        
+                        // Check daily reset
+                        const today = new Date().toDateString();
+                        if (this.state.lastDate !== today) {
+                            this.state.todayChants = 0;
+                            this.state.todayMalas = 0;
+                            this.state.lastDate = today;
+                            await this.saveUserData();
+                        }
+                    } else {
+                        // First time user - create initial data
                         await this.saveUserData();
                     }
+
+                    document.getElementById('username').textContent = this.currentUser.email;
+                    this.updateUI();
+                    this.showScreen('appScreen');
+
+                } catch (error) {
+                    this.showScreen('appScreen');
                 }
-                document.getElementById('username').textContent = this.currentUser;
-                this.updateUI();
             },
 
             async saveUserData() {
                 if (!this.currentUser) return;
-                
-                const userData = await this.getStorage(`user:${this.currentUser}`);
-                if (userData) {
-                    userData.data = { ...this.state };
-                    await this.setStorage(`user:${this.currentUser}`, userData);
+
+                try {
+                    const { error } = await supabaseClient
+                        .from('user_data')
+                        .upsert({
+                            user_id: this.currentUser.id,
+                            data: this.state,
+                            updated_at: new Date().toISOString()
+                        }, { onConflict: 'user_id' });
+
+                    if (error) throw error;
+                } catch (error) {
+                    // Silent fail
                 }
             },
 
@@ -1006,14 +950,36 @@
             },
 
             async init() {
-                const currentUser = await this.getStorage('currentUser');
-                if (currentUser) {
-                    this.currentUser = currentUser;
-                    await this.loadUserData();
-                    this.showScreen('appScreen');
-                } else {
-                    this.showScreen('loginScreen');
+                // Test Supabase connection
+                const statusEl = document.getElementById('connectionStatus');
+                if (statusEl) statusEl.textContent = 'Testing Supabase connection...';
+                
+                try {
+                    // Simple connection test
+                    const { data, error } = await supabaseClient.auth.getSession();
+                    if (statusEl) statusEl.textContent = '✓ Supabase connected';
+                    
+                    if (data.session) {
+                        this.currentUser = data.session.user;
+                        await this.loadUserData();
+                    } else {
+                        this.showScreen('loginScreen');
+                    }
+                } catch (error) {
+                    if (statusEl) statusEl.textContent = '✗ Connection failed: ' + error.message;
+                    setTimeout(() => this.showScreen('loginScreen'), 2000);
                 }
+
+                // Listen for auth changes
+                supabaseClient.auth.onAuthStateChange(async (event, session) => {
+                    if (event === 'SIGNED_IN' && session) {
+                        this.currentUser = session.user;
+                        await this.loadUserData();
+                    } else if (event === 'SIGNED_OUT') {
+                        this.currentUser = null;
+                        this.showScreen('loginScreen');
+                    }
+                });
             }
         };
 
